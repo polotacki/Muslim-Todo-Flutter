@@ -35,7 +35,7 @@ Widget buildTaskItem(@required contextpage, Map model) => Padding(
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10.0),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Color(0xffefefef),
               offset: Offset(-20, -10),
@@ -54,13 +54,13 @@ Widget buildTaskItem(@required contextpage, Map model) => Padding(
           Expanded(
             child: Row(
               children: [
-                Padding(padding: EdgeInsets.only(left: 20)),
+                const Padding(padding: EdgeInsets.only(left: 20)),
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(width: 3, color: Colors.grey),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Icon(
+                  child: const Icon(
                     Icons.done,
                     color: Colors.deepPurple,
                     size: 24,

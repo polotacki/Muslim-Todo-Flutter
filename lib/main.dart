@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
                 color: Colors.black,
                 fontWeight: FontWeight.w400),
           ).apply(fontFamily: 'Gilroy')),
-      home: HomeLayout(),
+      home: const HomeLayout(),
     );
   }
 }
