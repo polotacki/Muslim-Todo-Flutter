@@ -48,6 +48,8 @@ dependencies:
   rename: ^2.1.1
   image: ^3.0.2
   sqflite:
+  bloc: ^8.1.0
+  flutter_bloc: ^8.1.1
 flutter_native_splash:
   color: "#673AB7"
   image: assets/logo_transparent.png
