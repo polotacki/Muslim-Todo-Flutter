@@ -8,13 +8,14 @@ class PendingTasks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
+    return Container();
+    /*ListView.separated(
         itemBuilder: (context, index) => buildTaskItem(context, tasks[index]),
         separatorBuilder: (context, index) => Container(
               width: double.infinity,
               height: 1,
               color: Colors.grey[300],
             ),
-        itemCount: tasks.length);
+        itemCount: tasks.length);*/
   }
 }

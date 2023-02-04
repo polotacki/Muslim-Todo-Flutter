@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:untitled3/shared/styles/extensions.dart';
 
+import '../cubit/cubit.dart';
+
 Widget defaultFormField(
         {required TextEditingController controller,
         required TextInputType type,
@@ -55,17 +57,14 @@ Widget buildTaskItem(@required contextpage, Map model) => Padding(
             child: Row(
               children: [
                 const Padding(padding: EdgeInsets.only(left: 20)),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 3, color: Colors.grey),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Icon(
-                    Icons.done,
-                    color: Colors.deepPurple,
-                    size: 24,
-                  ),
-                ),
+                Checkbox(
+                    //only check box
+                    value: AppCubit.get(BuildContext).check1, //unchecked
+                    onChanged: (bool? value) {
+                      //value returned when checkbox is clicked
+
+                      AppCubit.get(BuildContext).check1 = value!;
+                    }),
                 Padding(
                   padding: EdgeInsets.only(left: 4.0.wp),
                   child: Container(

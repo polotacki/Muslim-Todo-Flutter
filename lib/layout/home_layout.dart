@@ -10,7 +10,6 @@ import 'package:untitled3/shared/styles/extensions.dart';
 import '../shared/components/constants.dart';
 
 class HomeLayout extends StatelessWidget {
-  late Database database;
   var scaffoldKey = GlobalKey<ScaffoldState>();
   var formKey = GlobalKey<FormState>();
 
@@ -23,7 +22,7 @@ class HomeLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppCubit(),
+      create: (context) => AppCubit()..createDatabase(),
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (BuildContext context, AppStates state) {},
         builder: (BuildContext context, AppStates state) {
@@ -55,25 +54,25 @@ class HomeLayout extends StatelessWidget {
                 if (isBottomSheetShown) {
                   if (formKey.currentState?.validate() != true) {
                   } else {
-                    insertToDatabase(
+                    /*cubit.insertToDatabase(
                             title: titleController.text,
                             date: dateController.text,
                             time: timeController.text)
                         .then((value) {
-                      getDataFromDatabase(database).then(
+                      cubit.getDataFromDatabase(cubit.database).then(
                         (value) {
                           Navigator.pop(context);
-/*                    setState(() {
+*/ /*                    setState(() {
                       isBottomSheetShown = false;
                       fabIcon = Icons.edit;
 
                       tasks = value;
                       print("got tasks.. $value");
                     }
-                    );*/
+                    );*/ /*
                         },
                       );
-                    });
+                    });*/
                   }
                 } else {
                   scaffoldKey.currentState
@@ -209,58 +208,5 @@ class HomeLayout extends StatelessWidget {
     );
   }
 
-  final String tableTodo = 'tasks';
-  final String columnId = '_id';
-  final String columnTitle = 'title';
-  final String columnDate = 'date';
-  final String columnTime = 'time';
-  final String columnStatus = 'status';
 
-  void createDatabase() async {
-    database = await openDatabase('todo.db', version: 1,
-        onCreate: (database, version) async {
-          print('database created');
-
-          await database.execute('''
-create table $tableTodo ( 
-  $columnId integer primary key autoincrement, 
-  $columnTitle text not null,
-   $columnDate text not null,
-    $columnTime text not null,
-  $columnStatus text not null)
-''');
-          print('table created');
-        }, onOpen: (database) {
-          getDataFromDatabase(database).then((value) {
-            tasks = value;
-            print("got tasks.. $value");
-          });
-          print('database opened');
-        });
-  }
-
-  Future insertToDatabase({@required String? title,
-    @required String? time,
-    @required String? date}) async {
-    return await database.transaction((txn) {
-      txn
-          .rawInsert(
-          'INSERT INTO $tableTodo ($columnTitle,$columnDate,$columnTime,$columnStatus) VALUES ("$title","$date","$time","")')
-          .then((value) {
-        print('id $value inserted successfully');
-      }).catchError((onError) {
-        print(onError.toString());
-      });
-      todoInsert() async {
-        var x = print("inserting data ..");
-        return x;
-      }
-
-      return todoInsert();
-    });
-  }
-
-  Future<List<Map>> getDataFromDatabase(database) async {
-    return await database.rawQuery('SELECT * FROM tasks');
-  }
 }
