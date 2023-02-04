@@ -2,19 +2,13 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:untitled3/shared/components/components.dart';
 import 'package:untitled3/shared/cubit/cubit.dart';
 import 'package:untitled3/shared/styles/extensions.dart';
 
-import '../shared/components/constants.dart';
-
 class HomeLayout extends StatelessWidget {
   var scaffoldKey = GlobalKey<ScaffoldState>();
   var formKey = GlobalKey<FormState>();
-
-  bool isBottomSheetShown = false;
-  IconData fabIcon = Icons.edit;
   var titleController = TextEditingController();
   var timeController = TextEditingController();
   var dateController = TextEditingController();
@@ -49,9 +43,9 @@ class HomeLayout extends StatelessWidget {
             ),
             floatingActionButton: FloatingActionButton(
               tooltip: 'add tasks',
-              child: Icon(fabIcon),
+              child: Icon(cubit.fabIcon),
               onPressed: () {
-                if (isBottomSheetShown) {
+                if (cubit.isBottomSheetShown) {
                   if (formKey.currentState?.validate() != true) {
                   } else {
                     /*cubit.insertToDatabase(
@@ -147,8 +141,7 @@ class HomeLayout extends StatelessWidget {
                                               context: context,
                                               initialDate: DateTime.now(),
                                               firstDate: DateTime.now(),
-                                              lastDate:
-                                                  DateTime.parse('2024-02-28'),
+                                              lastDate: DateTime(2024),
                                             ).then((value) {
                                               if (value != null) {
                                                 dateController.text =
@@ -167,13 +160,11 @@ class HomeLayout extends StatelessWidget {
                           elevation: 20.0)
                       .closed
                       .then((value) {
-                    isBottomSheetShown = false;
-                    /* setState(() {
-                fabIcon = Icons.edit;
-              });*/
+                    cubit.changeBottomSheetState(
+                        isShow: false, icon: Icons.edit);
                   });
 
-                  isBottomSheetShown = true;
+                  cubit.changeBottomSheetState(isShow: true, icon: Icons.add);
                   /*setState(() {
               fabIcon = Icons.add;
             });*/
@@ -207,6 +198,4 @@ class HomeLayout extends StatelessWidget {
       ),
     );
   }
-
-
 }
