@@ -1,7 +1,11 @@
+import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled3/layout/home_layout.dart';
+import 'package:untitled3/shared/bloc_observer.dart';
 
 void main() {
+  Bloc.observer = MyBlocObserver();
+
   runApp(const MyApp());
 }
 
@@ -18,7 +22,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Gilroy',
           useMaterial3: true,
           colorScheme:
-              const ColorScheme.light().copyWith(primary: Colors.deepPurple),
+          const ColorScheme.light().copyWith(primary: Colors.deepPurple),
           primaryColor: Colors.deepPurple,
           textTheme: const TextTheme(
             titleLarge: TextStyle(
@@ -58,7 +62,7 @@ class MyApp extends StatelessWidget {
                 color: Colors.black,
                 fontWeight: FontWeight.w400),
           ).apply(fontFamily: 'Gilroy')),
-      home: const HomeLayout(),
+      home: HomeLayout(),
     );
   }
 }

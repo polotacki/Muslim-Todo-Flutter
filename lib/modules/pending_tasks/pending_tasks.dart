@@ -4,7 +4,7 @@ import '../../shared/components/components.dart';
 import '../../shared/components/constants.dart';
 
 class PendingTasks extends StatelessWidget {
-  const PendingTasks({Key? key}) : super(key: key);
+   const PendingTasks({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
