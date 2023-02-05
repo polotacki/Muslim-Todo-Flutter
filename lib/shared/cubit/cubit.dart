@@ -5,6 +5,9 @@ import 'package:untitled3/modules/archived_tasks/archived_tasks.dart';
 import 'package:untitled3/modules/done_tasks/done_tasks.dart';
 import 'package:untitled3/modules/pending_tasks/pending_tasks.dart';
 
+import 'cubit.dart';
+import 'cubit.dart';
+
 part 'state.dart';
 
 class AppCubit extends Cubit<AppStates> {
@@ -43,7 +46,7 @@ class AppCubit extends Cubit<AppStates> {
   List<String> titles = ['My List', 'Done Tasks', 'Archive'];
   late Database database;
   final String tableTodo = 'tasks';
-  final String columnId = '_id';
+  final String columnId = 'id';
   final String columnTitle = 'title';
   final String columnDate = 'date';
   final String columnTime = 'time';
@@ -75,16 +78,22 @@ create table $tableTodo (
     });
   }
 
-  Future insertToDatabase(
+  insertToDatabase(
       {@required String? title,
       @required String? time,
       @required String? date}) async {
-    return await database.transaction((txn) {
+    await database.transaction((txn) {
       txn
           .rawInsert(
               'INSERT INTO $tableTodo ($columnTitle,$columnDate,$columnTime,$columnStatus) VALUES ("$title","$date","$time","")')
           .then((value) {
         print('id $value inserted successfully');
+        emit(AppInsertDatabaseState());
+        getDataFromDatabase(database).then((value) {
+          tasks = value;
+          print("got tasks.. $tasks");
+          emit(AppGetDatabaseState());
+        });
       }).catchError((onError) {
         print(onError.toString());
       });

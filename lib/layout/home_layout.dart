@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:untitled3/shared/components/components.dart';
 import 'package:untitled3/shared/cubit/cubit.dart';
@@ -18,7 +19,11 @@ class HomeLayout extends StatelessWidget {
     return BlocProvider(
       create: (context) => AppCubit()..createDatabase(),
       child: BlocConsumer<AppCubit, AppStates>(
-        listener: (BuildContext context, AppStates state) {},
+        listener: (BuildContext context, AppStates state) {
+          if (state is AppInsertDatabaseState) {
+            Navigator.pop(context);
+          }
+        },
         builder: (BuildContext context, AppStates state) {
           AppCubit cubit = AppCubit.get(context);
           return Scaffold(
@@ -48,25 +53,10 @@ class HomeLayout extends StatelessWidget {
                 if (cubit.isBottomSheetShown) {
                   if (formKey.currentState?.validate() != true) {
                   } else {
-                    /*cubit.insertToDatabase(
-                            title: titleController.text,
-                            date: dateController.text,
-                            time: timeController.text)
-                        .then((value) {
-                      cubit.getDataFromDatabase(cubit.database).then(
-                        (value) {
-                          Navigator.pop(context);
-*/ /*                    setState(() {
-                      isBottomSheetShown = false;
-                      fabIcon = Icons.edit;
-
-                      tasks = value;
-                      print("got tasks.. $value");
-                    }
-                    );*/ /*
-                        },
-                      );
-                    });*/
+                    cubit.insertToDatabase(
+                        title: titleController.text,
+                        time: timeController.text,
+                        date: dateController.text);
                   }
                 } else {
                   scaffoldKey.currentState
