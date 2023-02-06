@@ -78,6 +78,15 @@ create table $tableTodo (
     });
   }
 
+  Future<int> updateData({
+    @required String? status,
+    @required int id = 1,
+  }) async {
+    return await database.rawUpdate(
+        'UPDATE $tableTodo SET name = ? WHERE name = ?',
+        ['updated name', '9876']);
+  }
+
   insertToDatabase(
       {@required String? title,
       @required String? time,
