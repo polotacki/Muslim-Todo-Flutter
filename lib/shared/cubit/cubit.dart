@@ -162,6 +162,38 @@ create table $tableTodo (
     });
   }
 
+  bool isCheckedB = false;
+  IconData ChIcom = Icons.edit;
+
+  void getCheckedState({
+    required bool isChecked,
+  }) {
+    isCheckedB = isChecked;
+
+    database
+        .rawQuery('SELECT status FROM tasks WHERE id =?', ['id']).then((value) {
+      value.forEach((element) {
+        if (element['status'] == 'new') {
+          isChecked = false;
+          newTasks.add(element);
+        } else if (element['status'] == 'done') {
+          doneTasks.add(element);
+          isChecked = true;
+        } else if (element['status'] == 'archive') {
+          archivedTasks.add(element);
+          isChecked = false;
+        }
+
+        print(element['status']);
+
+        newTasks = [];
+        doneTasks = [];
+        archivedTasks = [];
+      });
+      emit(AppUpdateCheckedState());
+    });
+  }
+
   AppCubit() : super(AppInitialState());
 
   static AppCubit get(context) => BlocProvider.of(context);

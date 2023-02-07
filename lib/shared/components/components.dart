@@ -95,7 +95,6 @@ Widget slideRightBackground() {
   );
 }
 
-bool isChecked = false;
 
 Widget buildTaskItem(context, Map model) => Padding(
     padding: EdgeInsets.symmetric(vertical: 5.0.wp, horizontal: 9.0.wp),
@@ -164,22 +163,17 @@ Widget buildTaskItem(context, Map model) => Padding(
                   GestureDetector(
                     onTap: () {
                       if (model['status'] == 'new') {
-                        isChecked = false;
                         AppCubit.get(context)
                             .updateData(status: 'done', id: model['id']);
                       } else if (model['status'] == 'done') {
-                        isChecked = true;
-
                         AppCubit.get(context)
                             .updateData(status: 'new', id: model['id']);
                       } else {
-                        isChecked = false;
-
                         AppCubit.get(context)
                             .updateData(status: 'new', id: model['id']);
                       }
                     },
-                    child: isChecked
+                    child: model['status'] == 'done'
                         ? AnimatedContainer(
                             duration: Duration(milliseconds: 500),
                             curve: Curves.fastLinearToSlowEaseIn,
