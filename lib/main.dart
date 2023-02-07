@@ -22,13 +22,21 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Gilroy',
           useMaterial3: true,
           colorScheme:
-          const ColorScheme.light().copyWith(primary: Colors.deepPurple),
+              const ColorScheme.light().copyWith(primary: Colors.deepPurple),
           primaryColor: Colors.deepPurple,
           textTheme: const TextTheme(
             titleLarge: TextStyle(
                 fontSize: 32,
                 fontFamily: "Gilroy-Thin.ttf",
                 color: Colors.black),
+            titleMedium: TextStyle(
+                fontSize: 16,
+                fontFamily: "Gilroy-Medium.ttf",
+                color: Colors.deepPurple),
+            titleSmall: TextStyle(
+                fontSize: 16,
+                fontFamily: "Gilroy-Medium.ttf",
+                color: Colors.redAccent),
             bodyLarge: TextStyle(
                 fontSize: 16,
                 fontFamily: "Gilroy-Regular.ttf",

@@ -78,9 +78,30 @@ create table $tableTodo (
     });
   }
 
+  Future<bool?> confirmDeletion(BuildContext context) {
+    return showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Are you sure you want to delete?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Yes'),
+            )
+          ],
+        );
+      },
+    );
+  }
+
   void updateData({
     @required String? status,
-    @required int id = 1,
+    @required int? id,
   }) async {
     database.rawUpdate('UPDATE $tableTodo SET status = ? WHERE id = ?',
         ['$status', '$id']).then((value) {
