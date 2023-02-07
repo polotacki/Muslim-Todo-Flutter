@@ -95,6 +95,8 @@ Widget slideRightBackground() {
   );
 }
 
+bool isChecked = false;
+
 Widget buildTaskItem(context, Map model) => Padding(
     padding: EdgeInsets.symmetric(vertical: 5.0.wp, horizontal: 9.0.wp),
     child: Dismissible(
@@ -161,20 +163,49 @@ Widget buildTaskItem(context, Map model) => Padding(
                   const Padding(padding: EdgeInsets.only(left: 20)),
                   GestureDetector(
                     onTap: () {
-                      AppCubit.get(context)
-                          .updateData(status: 'done', id: model['id']);
+                      if (model['status'] == 'new') {
+                        isChecked = false;
+                        AppCubit.get(context)
+                            .updateData(status: 'done', id: model['id']);
+                      } else if (model['status'] == 'done') {
+                        isChecked = true;
+
+                        AppCubit.get(context)
+                            .updateData(status: 'new', id: model['id']);
+                      } else {
+                        isChecked = false;
+
+                        AppCubit.get(context)
+                            .updateData(status: 'new', id: model['id']);
+                      }
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 3, color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Icon(
-                        Icons.done,
-                        color: Colors.deepPurple,
-                        size: 24,
-                      ),
-                    ),
+                    child: isChecked
+                        ? AnimatedContainer(
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.fastLinearToSlowEaseIn,
+                            decoration: BoxDecoration(
+                              color: Colors.deepPurple,
+                              border: Border.all(width: 3, color: Colors.grey),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(
+                              Icons.done,
+                              color: Colors.white,
+                              size: 24,
+                            ))
+                        : AnimatedContainer(
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.fastLinearToSlowEaseIn,
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 3, color: Colors.grey),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(
+                              Icons.check_box,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                          ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 4.0.wp),

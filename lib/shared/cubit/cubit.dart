@@ -112,11 +112,10 @@ create table $tableTodo (
   void deleteData({
     @required int? id,
   }) async {
-    database
-      ..rawDelete('DELETE FROM Tasks WHERE id = ?', ['$id']).then((value) {
-        getDataFromDatabase(database);
-        emit(AppDeleteDatabaseState());
-      });
+    database.rawDelete('DELETE FROM Tasks WHERE id = ?', ['$id']).then((value) {
+      getDataFromDatabase(database);
+      emit(AppDeleteDatabaseState());
+    });
   }
 
   insertToDatabase(
