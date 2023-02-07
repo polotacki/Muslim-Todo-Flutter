@@ -81,11 +81,15 @@ create table $tableTodo (
           title: const Text('Are you sure you want to delete?'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context, false),
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
               child: const Text('No'),
             ),
             TextButton(
-              onPressed: () => Navigator.pop(context, true),
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
               child: const Text('Yes'),
             )
           ],
@@ -109,7 +113,7 @@ create table $tableTodo (
     @required int? id,
   }) async {
     database
-      ..rawDelete('DELETE FROM Test WHERE id = ?', ['$id']).then((value) {
+      ..rawDelete('DELETE FROM Tasks WHERE id = ?', ['$id']).then((value) {
         getDataFromDatabase(database);
         emit(AppDeleteDatabaseState());
       });
@@ -122,7 +126,7 @@ create table $tableTodo (
     await database.transaction((txn) {
       txn
           .rawInsert(
-              'INSERT INTO $tableTodo ($columnTitle,$columnDate,$columnTime,$columnStatus) VALUES ("$title","$date","$time","")')
+              'INSERT INTO $tableTodo ($columnTitle,$columnDate,$columnTime,$columnStatus) VALUES ("$title","$date","$time","new")')
           .then((value) {
         print('id $value inserted successfully');
         emit(AppInsertDatabaseState());

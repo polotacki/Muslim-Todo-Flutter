@@ -1,17 +1,20 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:untitled3/shared/styles/colors.dart';
 import 'package:untitled3/shared/styles/extensions.dart';
+
 import '../cubit/cubit.dart';
 
 Widget defaultFormField(
         {required TextEditingController controller,
         required TextInputType type,
         required IconData prefix,
-  required validate,
-  required String label,
-  bool isclickable = true,
-  onTap,
-  onSubmit,
-  onChange}) =>
+        required validate,
+        required String label,
+        bool isclickable = true,
+        onTap,
+        onSubmit,
+        onChange}) =>
     TextFormField(
       keyboardType: type,
       controller: controller,
@@ -32,7 +35,7 @@ Widget slideLeftBackground() {
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10.0),
-      color: Colors.red,
+      color: pink,
     ),
     child: Align(
       alignment: Alignment.centerRight,
@@ -64,7 +67,7 @@ Widget slideRightBackground() {
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10.0),
-      color: Colors.green,
+      color: green,
     ),
     child: Align(
       alignment: Alignment.centerLeft,
@@ -101,30 +104,25 @@ Widget buildTaskItem(context, Map model) => Padding(
       secondaryBackground: slideLeftBackground(),
       confirmDismiss: (direction) async {
         if (direction == DismissDirection.endToStart) {
-          var dialog = await showDialog(
+          AppCubit.get(context).deleteData(id: model['id']);
+
+          showDialog(
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
                   key: Key(model['id'].toString()),
                   actionsAlignment: MainAxisAlignment.center,
-                  content: Text("Are you sure ?",
+                  content: Text("${model['title']} Deleted successfully",
                       style: Theme.of(context).textTheme.bodySmall),
                   actions: <Widget>[
-                    ElevatedButton(
-                      child: Text(
-                        "Cancel",
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
                     SizedBox(width: 20),
                     ElevatedButton(
-                      child: Text("Delete",
-                          style: Theme.of(context).textTheme.titleSmall),
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.deepPurple)),
+                      child: Text("Okay",
+                          style: Theme.of(context).textTheme.displaySmall),
                       onPressed: () {
-                        AppCubit.get(context).deleteData(id: model['id']);
                         Navigator.of(context).pop();
                       },
                     ),
@@ -134,7 +132,6 @@ Widget buildTaskItem(context, Map model) => Padding(
         } else {
           AppCubit.get(context).updateData(status: 'archive', id: model['id']);
         }
-        return null;
       },
       child: Container(
         height: 60.0,
@@ -225,3 +222,23 @@ Widget buildTaskItem(context, Map model) => Padding(
         ),
       ),
     ));
+
+Widget taskBuilder(@required List<Map> tasks) => ConditionalBuilder(
+      condition: tasks.length > 0,
+      builder: (context) => ListView.separated(
+          itemBuilder: (context, index) => buildTaskItem(context, tasks[index]),
+          separatorBuilder: (context, index) => Container(
+                width: double.infinity,
+                height: 1,
+                color: Colors.grey[300],
+              ),
+          itemCount: tasks.length),
+      fallback: (context) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset('assets/images/Task.png'),
+          Text('List is empty .. , Add some tasks.',
+              style: Theme.of(context).textTheme.bodyMedium),
+        ],
+      ),
+    );
