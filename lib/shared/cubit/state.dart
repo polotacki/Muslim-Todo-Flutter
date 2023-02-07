@@ -21,6 +21,4 @@ class AppDeleteDatabaseState extends AppStates {}
 
 class InitialDialogState extends AppStates {}
 
-class AppDialogHidden extends AppStates {}
-
-class AppDialogVisible extends AppStates {}
+class AppIconColor extends AppStates {}

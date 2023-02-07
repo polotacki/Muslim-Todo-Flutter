@@ -41,7 +41,7 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   bool check1 = false;
-
+  bool check2 = false;
   List<String> titles = ['My List', 'Done Tasks', 'Archive'];
   late Database database;
   final String tableTodo = 'tasks';
@@ -98,6 +98,25 @@ create table $tableTodo (
     );
   }
 
+  updateIconColor({
+    @required String? id,
+  }) async {
+    newTasks = [];
+    doneTasks = [];
+    archivedTasks = [];
+    Color iconColor = Colors.deepPurple;
+    database.rawQuery('SELECT status FROM tasks WHERE id = ?', ['$id']).then(
+        (value) {
+      if (value == 'new') {
+        iconColor = Colors.white;
+      } else {
+        iconColor = Colors.white;
+      }
+
+      print(value);
+    });
+  }
+
   void updateData({
     @required String? status,
     @required int? id,
@@ -112,11 +131,10 @@ create table $tableTodo (
   void deleteData({
     @required int? id,
   }) async {
-    database
-      ..rawDelete('DELETE FROM Tasks WHERE id = ?', ['$id']).then((value) {
-        getDataFromDatabase(database);
-        emit(AppDeleteDatabaseState());
-      });
+    database.rawDelete('DELETE FROM Tasks WHERE id = ?', ['$id']).then((value) {
+      getDataFromDatabase(database);
+      emit(AppDeleteDatabaseState());
+    });
   }
 
   insertToDatabase(

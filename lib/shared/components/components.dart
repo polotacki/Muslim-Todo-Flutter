@@ -161,15 +161,20 @@ Widget buildTaskItem(context, Map model) => Padding(
                   const Padding(padding: EdgeInsets.only(left: 20)),
                   GestureDetector(
                     onTap: () {
-                      AppCubit.get(context)
-                          .updateData(status: 'done', id: model['id']);
+                      if (model['status'] == 'done') {
+                        AppCubit.get(context)
+                            .updateData(status: 'new', id: model['id']);
+                      } else {
+                        AppCubit.get(context)
+                            .updateData(status: 'done', id: model['id']);
+                      }
                     },
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(width: 3, color: Colors.grey),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.done,
                         color: Colors.deepPurple,
                         size: 24,
