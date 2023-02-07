@@ -57,18 +57,18 @@ Widget buildTaskItem(@required contextpage, Map model) => Padding(
             child: Row(
               children: [
                 const Padding(padding: EdgeInsets.only(left: 20)),
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 3, color: Colors.grey),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 3, color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: IconButton(
+                    icon: const Icon(
                       Icons.done,
                       color: Colors.deepPurple,
                       size: 24,
                     ),
+                    onPressed: () {},
                   ),
                 ),
                 Padding(

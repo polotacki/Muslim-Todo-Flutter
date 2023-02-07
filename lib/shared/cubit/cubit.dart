@@ -78,6 +78,16 @@ create table $tableTodo (
     });
   }
 
+  void updateData({
+    @required String? status,
+    @required int id = 1,
+  }) async {
+    database.rawUpdate('UPDATE $tableTodo SET status = ? WHERE id = ?',
+        ['$status', '$id']).then((value) {
+      emit(AppUpdateDatabaseState());
+    });
+  }
+
   insertToDatabase(
       {@required String? title,
       @required String? time,

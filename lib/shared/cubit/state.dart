@@ -15,4 +15,4 @@ class AppInsertDatabaseState extends AppStates {}
 
 class AppChangeBotttomSheetState extends AppStates {}
 
-class AppChangCheckboxState extends AppStates {}
+class AppUpdateDatabaseState extends AppStates {}
