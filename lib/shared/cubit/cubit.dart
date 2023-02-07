@@ -5,9 +5,6 @@ import 'package:untitled3/modules/archived_tasks/archived_tasks.dart';
 import 'package:untitled3/modules/done_tasks/done_tasks.dart';
 import 'package:untitled3/modules/pending_tasks/pending_tasks.dart';
 
-import 'cubit.dart';
-import 'cubit.dart';
-
 part 'state.dart';
 
 class AppCubit extends Cubit<AppStates> {
@@ -34,7 +31,9 @@ class AppCubit extends Cubit<AppStates> {
       size: 35,
     )
   ];
-  List<Map> tasks = [];
+  List<Map> newTasks = [];
+  List<Map> doneTasks = [];
+  List<Map> archivedTasks = [];
 
   void changeIndex(int index) {
     currentIndex = index;
@@ -66,15 +65,56 @@ create table $tableTodo (
 ''');
       print('table created');
     }, onOpen: (database) {
-      getDataFromDatabase(database).then((value) {
-        tasks = value;
-        print("got tasks.. $tasks");
-        emit(AppGetDatabaseState());
-      });
+      getDataFromDatabase(database);
       print('database opened');
     }).then((value) {
       database = value;
       emit(AppCreateDatabaseState());
+    });
+  }
+
+  Future<bool?> confirmDeletion(BuildContext context) {
+    return showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Are you sure you want to delete?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              child: const Text('Yes'),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void updateData({
+    @required String? status,
+    @required int? id,
+  }) async {
+    database.rawUpdate('UPDATE $tableTodo SET status = ? WHERE id = ?',
+        ['$status', '$id']).then((value) {
+      getDataFromDatabase(database);
+      emit(AppUpdateDatabaseState());
+    });
+  }
+
+  void deleteData({
+    @required int? id,
+  }) async {
+    database.rawDelete('DELETE FROM Tasks WHERE id = ?', ['$id']).then((value) {
+      getDataFromDatabase(database);
+      emit(AppDeleteDatabaseState());
     });
   }
 
@@ -85,15 +125,11 @@ create table $tableTodo (
     await database.transaction((txn) {
       txn
           .rawInsert(
-              'INSERT INTO $tableTodo ($columnTitle,$columnDate,$columnTime,$columnStatus) VALUES ("$title","$date","$time","")')
+              'INSERT INTO $tableTodo ($columnTitle,$columnDate,$columnTime,$columnStatus) VALUES ("$title","$date","$time","new")')
           .then((value) {
         print('id $value inserted successfully');
         emit(AppInsertDatabaseState());
-        getDataFromDatabase(database).then((value) {
-          tasks = value;
-          print("got tasks.. $tasks");
-          emit(AppGetDatabaseState());
-        });
+        getDataFromDatabase(database);
       }).catchError((onError) {
         print(onError.toString());
       });
@@ -106,8 +142,56 @@ create table $tableTodo (
     });
   }
 
-  Future<List<Map>> getDataFromDatabase(database) async {
-    return await database.rawQuery('SELECT * FROM tasks');
+  void getDataFromDatabase(database) {
+    newTasks = [];
+    doneTasks = [];
+    archivedTasks = [];
+    database.rawQuery('SELECT * FROM tasks').then((value) {
+      value.forEach((element) {
+        if (element['status'] == 'new') {
+          newTasks.add(element);
+        } else if (element['status'] == 'done') {
+          doneTasks.add(element);
+        } else {
+          archivedTasks.add(element);
+        }
+
+        print(element['status']);
+      });
+      emit(AppGetDatabaseState());
+    });
+  }
+
+  bool isCheckedB = false;
+  IconData ChIcom = Icons.edit;
+
+  void getCheckedState({
+    required bool isChecked,
+  }) {
+    isCheckedB = isChecked;
+
+    database
+        .rawQuery('SELECT status FROM tasks WHERE id =?', ['id']).then((value) {
+      value.forEach((element) {
+        if (element['status'] == 'new') {
+          isChecked = false;
+          newTasks.add(element);
+        } else if (element['status'] == 'done') {
+          doneTasks.add(element);
+          isChecked = true;
+        } else if (element['status'] == 'archive') {
+          archivedTasks.add(element);
+          isChecked = false;
+        }
+
+        print(element['status']);
+
+        newTasks = [];
+        doneTasks = [];
+        archivedTasks = [];
+      });
+      emit(AppUpdateCheckedState());
+    });
   }
 
   AppCubit() : super(AppInitialState());
