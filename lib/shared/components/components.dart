@@ -1,10 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:untitled3/shared/styles/extensions.dart';
-
 import '../cubit/cubit.dart';
-import '../styles/colors.dart';
 
 Widget defaultFormField(
         {required TextEditingController controller,
@@ -99,19 +95,19 @@ Widget slideRightBackground() {
 Widget buildTaskItem(context, Map model) => Padding(
     padding: EdgeInsets.symmetric(vertical: 5.0.wp, horizontal: 9.0.wp),
     child: Dismissible(
-      key: new ObjectKey(model),
+      key: Key(model['id'].toString()),
       onDismissed: (direction) {},
       background: slideRightBackground(),
       secondaryBackground: slideLeftBackground(),
       confirmDismiss: (direction) async {
         if (direction == DismissDirection.endToStart) {
-          await showDialog(
+          var dialog = await showDialog(
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
+                  key: Key(model['id'].toString()),
                   actionsAlignment: MainAxisAlignment.center,
-                  content: Text(
-                      "Are you sure you want to delete ${model['title']}?",
+                  content: Text("Are you sure ?",
                       style: Theme.of(context).textTheme.bodySmall),
                   actions: <Widget>[
                     ElevatedButton(
@@ -128,6 +124,7 @@ Widget buildTaskItem(context, Map model) => Padding(
                       child: Text("Delete",
                           style: Theme.of(context).textTheme.titleSmall),
                       onPressed: () {
+                        AppCubit.get(context).deleteData(id: model['id']);
                         Navigator.of(context).pop();
                       },
                     ),
@@ -135,8 +132,9 @@ Widget buildTaskItem(context, Map model) => Padding(
                 );
               });
         } else {
-          // TODO: Navigate to edit page;
+          AppCubit.get(context).updateData(status: 'archive', id: model['id']);
         }
+        return null;
       },
       child: Container(
         height: 60.0,

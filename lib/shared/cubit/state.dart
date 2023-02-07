@@ -16,3 +16,11 @@ class AppInsertDatabaseState extends AppStates {}
 class AppChangeBotttomSheetState extends AppStates {}
 
 class AppUpdateDatabaseState extends AppStates {}
+
+class AppDeleteDatabaseState extends AppStates {}
+
+class InitialDialogState extends AppStates {}
+
+class AppDialogHidden extends AppStates {}
+
+class AppDialogVisible extends AppStates {}

@@ -5,9 +5,6 @@ import 'package:untitled3/modules/archived_tasks/archived_tasks.dart';
 import 'package:untitled3/modules/done_tasks/done_tasks.dart';
 import 'package:untitled3/modules/pending_tasks/pending_tasks.dart';
 
-import 'cubit.dart';
-import 'cubit.dart';
-
 part 'state.dart';
 
 class AppCubit extends Cubit<AppStates> {
@@ -34,7 +31,9 @@ class AppCubit extends Cubit<AppStates> {
       size: 35,
     )
   ];
-  List<Map> tasks = [];
+  List<Map> newTasks = [];
+  List<Map> doneTasks = [];
+  List<Map> archivedTasks = [];
 
   void changeIndex(int index) {
     currentIndex = index;
@@ -66,11 +65,7 @@ create table $tableTodo (
 ''');
       print('table created');
     }, onOpen: (database) {
-      getDataFromDatabase(database).then((value) {
-        tasks = value;
-        print("got tasks.. $tasks");
-        emit(AppGetDatabaseState());
-      });
+      getDataFromDatabase(database);
       print('database opened');
     }).then((value) {
       database = value;
@@ -105,8 +100,19 @@ create table $tableTodo (
   }) async {
     database.rawUpdate('UPDATE $tableTodo SET status = ? WHERE id = ?',
         ['$status', '$id']).then((value) {
+      getDataFromDatabase(database);
       emit(AppUpdateDatabaseState());
     });
+  }
+
+  void deleteData({
+    @required int? id,
+  }) async {
+    database
+      ..rawDelete('DELETE FROM Test WHERE id = ?', ['$id']).then((value) {
+        getDataFromDatabase(database);
+        emit(AppDeleteDatabaseState());
+      });
   }
 
   insertToDatabase(
@@ -120,11 +126,7 @@ create table $tableTodo (
           .then((value) {
         print('id $value inserted successfully');
         emit(AppInsertDatabaseState());
-        getDataFromDatabase(database).then((value) {
-          tasks = value;
-          print("got tasks.. $tasks");
-          emit(AppGetDatabaseState());
-        });
+        getDataFromDatabase(database);
       }).catchError((onError) {
         print(onError.toString());
       });
@@ -137,8 +139,24 @@ create table $tableTodo (
     });
   }
 
-  Future<List<Map>> getDataFromDatabase(database) async {
-    return await database.rawQuery('SELECT * FROM tasks');
+  void getDataFromDatabase(database) {
+    newTasks = [];
+    doneTasks = [];
+    archivedTasks = [];
+    database.rawQuery('SELECT * FROM tasks').then((value) {
+      value.forEach((element) {
+        if (element['status'] == 'new') {
+          newTasks.add(element);
+        } else if (element['status'] == 'done') {
+          doneTasks.add(element);
+        } else {
+          archivedTasks.add(element);
+        }
+
+        print(element['status']);
+      });
+      emit(AppGetDatabaseState());
+    });
   }
 
   AppCubit() : super(AppInitialState());
