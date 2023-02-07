@@ -95,7 +95,6 @@ Widget slideRightBackground() {
   );
 }
 
-
 Widget buildTaskItem(context, Map model) => Padding(
     padding: EdgeInsets.symmetric(vertical: 5.0.wp, horizontal: 9.0.wp),
     child: Dismissible(

@@ -41,7 +41,7 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   bool check1 = false;
-
+  bool check2 = false;
   List<String> titles = ['My List', 'Done Tasks', 'Archive'];
   late Database database;
   final String tableTodo = 'tasks';
@@ -96,6 +96,25 @@ create table $tableTodo (
         );
       },
     );
+  }
+
+  updateIconColor({
+    @required String? id,
+  }) async {
+    newTasks = [];
+    doneTasks = [];
+    archivedTasks = [];
+    Color iconColor = Colors.deepPurple;
+    database.rawQuery('SELECT status FROM tasks WHERE id = ?', ['$id']).then(
+        (value) {
+      if (value == 'new') {
+        iconColor = Colors.white;
+      } else {
+        iconColor = Colors.white;
+      }
+
+      print(value);
+    });
   }
 
   void updateData({
@@ -159,38 +178,6 @@ create table $tableTodo (
         print(element['status']);
       });
       emit(AppGetDatabaseState());
-    });
-  }
-
-  bool isCheckedB = false;
-  IconData ChIcom = Icons.edit;
-
-  void getCheckedState({
-    required bool isChecked,
-  }) {
-    isCheckedB = isChecked;
-
-    database
-        .rawQuery('SELECT status FROM tasks WHERE id =?', ['id']).then((value) {
-      value.forEach((element) {
-        if (element['status'] == 'new') {
-          isChecked = false;
-          newTasks.add(element);
-        } else if (element['status'] == 'done') {
-          doneTasks.add(element);
-          isChecked = true;
-        } else if (element['status'] == 'archive') {
-          archivedTasks.add(element);
-          isChecked = false;
-        }
-
-        print(element['status']);
-
-        newTasks = [];
-        doneTasks = [];
-        archivedTasks = [];
-      });
-      emit(AppUpdateCheckedState());
     });
   }
 
