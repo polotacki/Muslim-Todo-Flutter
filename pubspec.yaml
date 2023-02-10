@@ -51,6 +51,9 @@ dependencies:
   bloc: ^8.1.0
   flutter_bloc: ^8.1.1
   conditional_builder_null_safety: ^0.0.6
+  location: ^4.4.0
+  lottie: ^2.2.0
+  geocoding: ^2.0.5
 flutter_native_splash:
   color: "#673AB7"
   image: assets/logo_transparent.png
