@@ -14,6 +14,8 @@ class HomeLayout extends StatelessWidget {
   var timeController = TextEditingController();
   var dateController = TextEditingController();
 
+  HomeLayout({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

@@ -1,5 +1,8 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:untitled3/layout/home_layout.dart';
 import 'package:untitled3/shared/bloc_observer.dart';
 
@@ -70,7 +73,15 @@ class MyApp extends StatelessWidget {
                 color: Colors.black,
                 fontWeight: FontWeight.w400),
           ).apply(fontFamily: 'Gilroy')),
-      home: HomeLayout(),
+      home: AnimatedSplashScreen.withScreenFunction(
+        splash: Lottie.asset("assets/animations/loading.json"),
+        screenFunction: () async {
+          return HomeLayout();
+        },
+        splashTransition: SplashTransition.rotationTransition,
+        pageTransitionType: PageTransitionType.fade,
+        animationDuration: const Duration(seconds: 2),
+      ),
     );
   }
 }
