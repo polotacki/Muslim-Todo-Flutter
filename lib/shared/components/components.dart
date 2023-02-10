@@ -11,7 +11,7 @@ Widget defaultFormField(
         required IconData prefix,
         required validate,
         required String label,
-        bool isclickable = true,
+        bool isClickable = true,
         onTap,
         onSubmit,
         onChange}) =>
@@ -116,7 +116,7 @@ Widget buildTaskItem(context, Map model) => Padding(
                   content: Text("${model['title']} Deleted successfully",
                       style: Theme.of(context).textTheme.bodySmall),
                   actions: <Widget>[
-                    SizedBox(width: 20),
+                    const SizedBox(width: 20),
                     ElevatedButton(
                       style: ButtonStyle(
                           backgroundColor:
@@ -133,6 +133,7 @@ Widget buildTaskItem(context, Map model) => Padding(
         } else {
           AppCubit.get(context).updateData(status: 'archive', id: model['id']);
         }
+        return null;
       },
       child: Container(
         height: 60.0,
@@ -175,7 +176,7 @@ Widget buildTaskItem(context, Map model) => Padding(
                     },
                     child: model['status'] == 'done'
                         ? AnimatedContainer(
-                            duration: Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 500),
                             curve: Curves.fastLinearToSlowEaseIn,
                             decoration: BoxDecoration(
                               color: Colors.deepPurple,
@@ -188,7 +189,7 @@ Widget buildTaskItem(context, Map model) => Padding(
                               size: 24,
                             ))
                         : AnimatedContainer(
-                            duration: Duration(milliseconds: 500),
+                      duration: const Duration(milliseconds: 500),
                             curve: Curves.fastLinearToSlowEaseIn,
                             decoration: BoxDecoration(
                               border: Border.all(width: 3, color: Colors.grey),
@@ -248,8 +249,8 @@ Widget buildTaskItem(context, Map model) => Padding(
       ),
     ));
 
-Widget taskBuilder(@required List<Map> tasks) => ConditionalBuilder(
-      condition: tasks.length > 0,
+Widget taskBuilder(List<Map> tasks) => ConditionalBuilder(
+      condition: tasks.isNotEmpty,
       builder: (context) => ListView.separated(
           itemBuilder: (context, index) => buildTaskItem(context, tasks[index]),
           separatorBuilder: (context, index) => Container(
