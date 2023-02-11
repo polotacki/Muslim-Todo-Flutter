@@ -13,7 +13,7 @@ class AppGetDatabaseState extends AppStates {}
 
 class AppInsertDatabaseState extends AppStates {}
 
-class AppChangeBotttomSheetState extends AppStates {}
+class AppChangeButtonSheetState extends AppStates {}
 
 class AppUpdateDatabaseState extends AppStates {}
 
