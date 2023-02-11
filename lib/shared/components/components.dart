@@ -95,7 +95,6 @@ Widget slideRightBackground() {
   );
 }
 
-
 Widget buildTaskItem(context, Map model) => Padding(
     padding: EdgeInsets.symmetric(vertical: 5.0.wp, horizontal: 9.0.wp),
     child: Dismissible(
@@ -162,44 +161,25 @@ Widget buildTaskItem(context, Map model) => Padding(
                   const Padding(padding: EdgeInsets.only(left: 20)),
                   GestureDetector(
                     onTap: () {
-                      if (model['status'] == 'new') {
-                        AppCubit.get(context)
-                            .updateData(status: 'done', id: model['id']);
-                      } else if (model['status'] == 'done') {
+                      if (model['status'] == 'done') {
                         AppCubit.get(context)
                             .updateData(status: 'new', id: model['id']);
                       } else {
                         AppCubit.get(context)
-                            .updateData(status: 'new', id: model['id']);
+                            .updateData(status: 'done', id: model['id']);
                       }
                     },
-                    child: model['status'] == 'done'
-                        ? AnimatedContainer(
-                            duration: Duration(milliseconds: 500),
-                            curve: Curves.fastLinearToSlowEaseIn,
-                            decoration: BoxDecoration(
-                              color: Colors.deepPurple,
-                              border: Border.all(width: 3, color: Colors.grey),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: const Icon(
-                              Icons.done,
-                              color: Colors.white,
-                              size: 24,
-                            ))
-                        : AnimatedContainer(
-                            duration: Duration(milliseconds: 500),
-                            curve: Curves.fastLinearToSlowEaseIn,
-                            decoration: BoxDecoration(
-                              border: Border.all(width: 3, color: Colors.grey),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: const Icon(
-                              Icons.check_box,
-                              color: Colors.white,
-                              size: 24,
-                            ),
-                          ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 3, color: Colors.grey),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Icon(
+                        Icons.done,
+                        color: Colors.deepPurple,
+                        size: 24,
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 4.0.wp),
