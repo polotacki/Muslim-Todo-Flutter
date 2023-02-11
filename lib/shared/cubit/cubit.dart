@@ -194,6 +194,6 @@ create table $tableTodo (
   }) {
     isBottomSheetShown = isShow;
     fabIcon = icon;
-    emit(AppChangeBotttomSheetState());
+    emit(AppChangeButtonSheetState());
   }
 }
