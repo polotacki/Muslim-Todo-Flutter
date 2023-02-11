@@ -1,8 +1,11 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:untitled3/shared/styles/colors.dart';
 import 'package:untitled3/shared/styles/extensions.dart';
 
+import '../../layout/home_layout.dart';
 import '../cubit/cubit.dart';
 
 Widget defaultFormField(
@@ -94,7 +97,6 @@ Widget slideRightBackground() {
     ),
   );
 }
-
 
 Widget buildTaskItem(context, Map model) => Padding(
     padding: EdgeInsets.symmetric(vertical: 5.0.wp, horizontal: 9.0.wp),
@@ -268,3 +270,66 @@ Widget taskBuilder(List<Map> tasks) => ConditionalBuilder(
         ],
       ),
     );
+
+Widget OnBoardingElement(
+    {required lottiePath, required title, required subTitle}) {
+  return SingleChildScrollView(
+    child: Column(
+      children: [
+        Lottie.asset(
+          lottiePath,
+          width: 300.w,
+          height: 300.h,
+        ),
+        SizedBox(height: 35.h),
+        Text(
+          title,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 18.sp,
+            color: Colors.black,
+          ),
+        ),
+        SizedBox(height: 15.h),
+        Text(
+          subTitle,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.w400,
+            fontSize: 14.sp,
+            color: Colors.black.withOpacity(0.8),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget SkipButton({required context}) {
+  return Align(
+    alignment: AlignmentDirectional.topEnd,
+    child: GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomeLayout()));
+      },
+      child: Container(
+        width: 80.w,
+        height: 40.h,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(40), color: Colors.deepPurple),
+        child: Center(
+          child: Text(
+            "Skip",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}

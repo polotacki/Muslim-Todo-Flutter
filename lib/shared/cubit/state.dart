@@ -20,3 +20,5 @@ class AppUpdateDatabaseState extends AppStates {}
 class AppDeleteDatabaseState extends AppStates {}
 
 class AppUpdateCheckedState extends AppStates {}
+
+class AppGetGeoLocationState extends AppStates {}
