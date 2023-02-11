@@ -262,13 +262,19 @@ Widget taskBuilder(List<Map> tasks) => ConditionalBuilder(
               ),
           itemCount: tasks.length),
       fallback: (context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset('assets/images/Task.png'),
-          Text('List is empty .. , Add some tasks.',
-              style: Theme.of(context).textTheme.bodyMedium),
+          Expanded(flex: 1, child: Image.asset('assets/images/Task.png')),
+          Expanded(
+            flex: 1,
+            child: Text('List is empty .. , Add some tasks.',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium),
+          ),
         ],
       ),
+
     );
 
 Widget OnBoardingElement(
