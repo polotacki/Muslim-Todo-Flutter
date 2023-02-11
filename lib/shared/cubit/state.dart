@@ -13,12 +13,10 @@ class AppGetDatabaseState extends AppStates {}
 
 class AppInsertDatabaseState extends AppStates {}
 
-class AppChangeButtonSheetState extends AppStates {}
+class AppChangeBotttomSheetState extends AppStates {}
 
 class AppUpdateDatabaseState extends AppStates {}
 
 class AppDeleteDatabaseState extends AppStates {}
 
-class InitialDialogState extends AppStates {}
-
-class AppIconColor extends AppStates {}
+class AppUpdateCheckedState extends AppStates {}

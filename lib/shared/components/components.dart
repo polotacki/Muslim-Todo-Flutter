@@ -1,8 +1,11 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:untitled3/shared/styles/colors.dart';
 import 'package:untitled3/shared/styles/extensions.dart';
 
+import '../../layout/home_layout.dart';
 import '../cubit/cubit.dart';
 
 Widget defaultFormField(
@@ -11,7 +14,7 @@ Widget defaultFormField(
         required IconData prefix,
         required validate,
         required String label,
-        bool isclickable = true,
+        bool isClickable = true,
         onTap,
         onSubmit,
         onChange}) =>
@@ -115,7 +118,7 @@ Widget buildTaskItem(context, Map model) => Padding(
                   content: Text("${model['title']} Deleted successfully",
                       style: Theme.of(context).textTheme.bodySmall),
                   actions: <Widget>[
-                    SizedBox(width: 20),
+                    const SizedBox(width: 20),
                     ElevatedButton(
                       style: ButtonStyle(
                           backgroundColor:
@@ -132,6 +135,7 @@ Widget buildTaskItem(context, Map model) => Padding(
         } else {
           AppCubit.get(context).updateData(status: 'archive', id: model['id']);
         }
+        return null;
       },
       child: Container(
         height: 60.0,
@@ -161,25 +165,44 @@ Widget buildTaskItem(context, Map model) => Padding(
                   const Padding(padding: EdgeInsets.only(left: 20)),
                   GestureDetector(
                     onTap: () {
-                      if (model['status'] == 'done') {
+                      if (model['status'] == 'new') {
+                        AppCubit.get(context)
+                            .updateData(status: 'done', id: model['id']);
+                      } else if (model['status'] == 'done') {
                         AppCubit.get(context)
                             .updateData(status: 'new', id: model['id']);
                       } else {
                         AppCubit.get(context)
-                            .updateData(status: 'done', id: model['id']);
+                            .updateData(status: 'new', id: model['id']);
                       }
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 3, color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Icon(
-                        Icons.done,
-                        color: Colors.deepPurple,
-                        size: 24,
-                      ),
-                    ),
+                    child: model['status'] == 'done'
+                        ? AnimatedContainer(
+                        duration: const Duration(milliseconds: 500),
+                            curve: Curves.fastLinearToSlowEaseIn,
+                            decoration: BoxDecoration(
+                              color: Colors.deepPurple,
+                              border: Border.all(width: 3, color: Colors.grey),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(
+                              Icons.done,
+                              color: Colors.white,
+                              size: 24,
+                            ))
+                        : AnimatedContainer(
+                      duration: const Duration(milliseconds: 500),
+                            curve: Curves.fastLinearToSlowEaseIn,
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 3, color: Colors.grey),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(
+                              Icons.check_box,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                          ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 4.0.wp),
@@ -228,8 +251,8 @@ Widget buildTaskItem(context, Map model) => Padding(
       ),
     ));
 
-Widget taskBuilder(@required List<Map> tasks) => ConditionalBuilder(
-      condition: tasks.length > 0,
+Widget taskBuilder(List<Map> tasks) => ConditionalBuilder(
+      condition: tasks.isNotEmpty,
       builder: (context) => ListView.separated(
           itemBuilder: (context, index) => buildTaskItem(context, tasks[index]),
           separatorBuilder: (context, index) => Container(
@@ -239,11 +262,80 @@ Widget taskBuilder(@required List<Map> tasks) => ConditionalBuilder(
               ),
           itemCount: tasks.length),
       fallback: (context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset('assets/images/Task.png'),
-          Text('List is empty .. , Add some tasks.',
-              style: Theme.of(context).textTheme.bodyMedium),
+          Expanded(flex: 1, child: Image.asset('assets/images/Task.png')),
+          Expanded(
+            flex: 1,
+            child: Text('List is empty .. , Add some tasks.',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium),
+          ),
         ],
       ),
+
     );
+
+Widget OnBoardingElement(
+    {required lottiePath, required title, required subTitle}) {
+  return SingleChildScrollView(
+    child: Column(
+      children: [
+        Lottie.asset(
+          lottiePath,
+          width: 300.w,
+          height: 300.h,
+        ),
+        SizedBox(height: 35.h),
+        Text(
+          title,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 18.sp,
+            color: Colors.black,
+          ),
+        ),
+        SizedBox(height: 15.h),
+        Text(
+          subTitle,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.w400,
+            fontSize: 14.sp,
+            color: Colors.black.withOpacity(0.8),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget SkipButton({required context}) {
+  return Align(
+    alignment: AlignmentDirectional.topEnd,
+    child: GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomeLayout()));
+      },
+      child: Container(
+        width: 80.w,
+        height: 40.h,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(40), color: Colors.deepPurple),
+        child: Center(
+          child: Text(
+            "Skip",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
