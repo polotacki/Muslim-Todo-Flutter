@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:untitled3/modules/archived_tasks/archived_tasks.dart';
 import 'package:untitled3/modules/done_tasks/done_tasks.dart';
 import 'package:untitled3/modules/pending_tasks/pending_tasks.dart';
+import 'package:untitled3/shared/network/local/cache_helper.dart';
+
+import '../network/remote/dio_helper.dart';
 
 part 'state.dart';
 
@@ -128,6 +132,47 @@ create table $tableTodo (
     });
   }
 
+  bool isDark = false;
+  ThemeMode appMode = ThemeMode.dark;
+
+  void changeAppMode({bool? fromShared}) {
+    if (fromShared != null) {
+      isDark = fromShared;
+      emit(AppChangeModeState());
+    } else {
+      isDark = !isDark;
+      CacheHelper.putBoolean(key: 'isDark', value: isDark).then((value) {
+        emit(AppChangeModeState());
+      });
+    }
+  }
+
+  Future<Position> determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+    emit(AppGetLocationPermission());
+
+    return await Geolocator.getCurrentPosition();
+  }
+
   void deleteData({
     @required int? id,
   }) async {
@@ -158,6 +203,23 @@ create table $tableTodo (
       }
 
       return todoInsert();
+    });
+  }
+
+  List<dynamic> prayer = [];
+
+  void getPrayer() {
+    emit(AppLoadingState());
+    DioHelper.getData(
+            url: 'v1/timingsByCity?',
+            query: {'city': 'Cairo', 'country': 'Egypt', 'method': '5'})
+        .then((value) {
+      prayer = value.data['data'];
+      print(prayer[0]['timings']);
+      emit(AppGePrayerTimesSuccessState());
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(AppGePrayerTimesErrorState(onError.toString()));
     });
   }
 

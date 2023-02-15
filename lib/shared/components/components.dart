@@ -216,7 +216,7 @@ Widget buildTaskItem(context, Map model) => Padding(
                               physics: const BouncingScrollPhysics(),
                               child: Text(
                                 '${model['title']}',
-                                style: Theme.of(context).textTheme.bodySmall,
+                                style: Theme.of(context).textTheme.displaySmall,
                               ),
                             ),
                           ),
@@ -237,11 +237,11 @@ Widget buildTaskItem(context, Map model) => Padding(
                     children: [
                       Text(
                         '${model['time']}',
-                        style: Theme.of(context).textTheme.displaySmall,
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                       Text(
                         '${model['date']}',
-                        style: Theme.of(context).textTheme.displaySmall,
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
                   )),
@@ -277,9 +277,10 @@ Widget taskBuilder(List<Map> tasks) => ConditionalBuilder(
 
     );
 
-Widget OnBoardingElement(
+Widget onBoardingElement(
     {required lottiePath, required title, required subTitle}) {
   return SingleChildScrollView(
+    scrollDirection: Axis.vertical,
     child: Column(
       children: [
         Lottie.asset(
@@ -312,7 +313,7 @@ Widget OnBoardingElement(
   );
 }
 
-Widget SkipButton({required context}) {
+Widget skipButton({required context}) {
   return Align(
     alignment: AlignmentDirectional.topEnd,
     child: GestureDetector(
