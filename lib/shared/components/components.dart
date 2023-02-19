@@ -115,10 +115,11 @@ Widget buildTaskItem(context, Map model) => Padding(
                 return AlertDialog(
                   key: Key(model['id'].toString()),
                   actionsAlignment: MainAxisAlignment.center,
+                  actionsOverflowAlignment: OverflowBarAlignment.center,
                   content: Text("${model['title']} Deleted successfully",
-                      style: Theme.of(context).textTheme.displaySmall),
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.labelSmall),
                   actions: <Widget>[
-                    const SizedBox(width: 20),
                     ElevatedButton(
                       style: ButtonStyle(
                           backgroundColor:

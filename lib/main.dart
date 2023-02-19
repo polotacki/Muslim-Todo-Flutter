@@ -96,6 +96,10 @@ class MyApp extends StatelessWidget {
                           ),
                           primaryColor: Colors.deepPurple,
                           textTheme: const TextTheme(
+                            labelSmall: TextStyle(
+                                fontSize: 16,
+                                fontFamily: "Gilroy-Medium.ttf",
+                                color: textColor1),
                             titleLarge: TextStyle(
                                 fontSize: 32,
                                 fontFamily: "Gilroy-Thin.ttf",
@@ -163,6 +167,10 @@ class MyApp extends StatelessWidget {
                               .copyWith(primary: Colors.deepPurple),
                           primaryColor: Colors.deepPurple,
                           textTheme: const TextTheme(
+                            labelSmall: TextStyle(
+                                fontSize: 16,
+                                fontFamily: "Gilroy-Medium.ttf",
+                                color: textColor2),
                             titleLarge: TextStyle(
                                 fontSize: 32,
                                 fontFamily: "Gilroy-Thin.ttf",
