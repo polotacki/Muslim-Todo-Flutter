@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 
+import '../../../modules/prayer_times/prayer_times.dart';
 import '../../cubit/cubit.dart';
 import 'custom_list_tile.dart';
 import 'header.dart';
@@ -62,8 +63,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     icon: Icons.home_outlined,
                     title: 'Home',
                     infoCount: 0,
+                    onTap: () {
+                      AppCubit.get(context).getPrayer();
+                    },
                   ),
                   CustomListTile(
+                    onTap: () {},
                     iconWidget: const Icon(
                       Icons.calendar_today,
                       color: Colors.white,
@@ -74,6 +79,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     infoCount: 0,
                   ),
                   CustomListTile(
+                    onTap: () {},
                     iconWidget: const Icon(
                       Icons.pin_drop,
                       color: Colors.white,
@@ -85,6 +91,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     doHaveMoreOptions: Icons.arrow_forward_ios,
                   ),
                   CustomListTile(
+                    onTap: () {},
                     iconWidget: const Icon(
                       Icons.message_rounded,
                       color: Colors.white,
@@ -95,6 +102,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     infoCount: 8,
                   ),
                   CustomListTile(
+                    onTap: () {},
                     iconWidget: const Icon(
                       Icons.cloud,
                       color: Colors.white,
@@ -106,6 +114,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     doHaveMoreOptions: Icons.arrow_forward_ios,
                   ),
                   CustomListTile(
+                    onTap: () {},
                     iconWidget: const Icon(
                       Icons.airplane_ticket,
                       color: Colors.white,
@@ -119,6 +128,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   const Divider(color: Colors.grey),
                   const Spacer(),
                   CustomListTile(
+                    onTap: () {},
                     iconWidget: const Icon(
                       Icons.notifications,
                       color: Colors.white,
@@ -129,6 +139,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     infoCount: 2,
                   ),
                   CustomListTile(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const PrayTimes()),
+                      );
+                    },
                     iconWidget: const Icon(
                       Icons.settings,
                       color: Colors.white,
@@ -140,6 +157,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                   const SizedBox(height: 10),
                   CustomListTile(
+                    onTap: () {},
                     iconWidget: FlutterSwitch(
                       width: 55.0,
                       height: 30.0,

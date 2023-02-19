@@ -8,6 +8,8 @@ class CustomListTile extends StatelessWidget {
   final int infoCount;
   final Widget iconWidget;
 
+  final GestureTapCallback onTap;
+
   const CustomListTile({
     Key? key,
     required this.isCollapsed,
@@ -16,12 +18,13 @@ class CustomListTile extends StatelessWidget {
     this.doHaveMoreOptions,
     required this.iconWidget,
     required this.infoCount,
+    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 500),
         width: isCollapsed ? 300 : 80,

@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:untitled3/modules/archived_tasks/archived_tasks.dart';
 import 'package:untitled3/modules/done_tasks/done_tasks.dart';
@@ -110,15 +113,15 @@ create table $tableTodo (
     archivedTasks = [];
     Color iconColor = Colors.deepPurple;
     database.rawQuery('SELECT status FROM tasks WHERE id = ?', ['$id']).then(
-        (value) {
-      if (value == 'new') {
-        iconColor = Colors.white;
-      } else {
-        iconColor = Colors.white;
-      }
+            (value) {
+          if (value == 'new') {
+            iconColor = Colors.white;
+          } else {
+            iconColor = Colors.white;
+          }
 
-      print(value);
-    });
+          print(value);
+        });
   }
 
   void updateData({
@@ -182,14 +185,13 @@ create table $tableTodo (
     });
   }
 
-  insertToDatabase(
-      {@required String? title,
-      @required String? time,
-      @required String? date}) async {
+  insertToDatabase({@required String? title,
+    @required String? time,
+    @required String? date}) async {
     await database.transaction((txn) {
       txn
           .rawInsert(
-              'INSERT INTO $tableTodo ($columnTitle,$columnDate,$columnTime,$columnStatus) VALUES ("$title","$date","$time","new")')
+          'INSERT INTO $tableTodo ($columnTitle,$columnDate,$columnTime,$columnStatus) VALUES ("$title","$date","$time","new")')
           .then((value) {
         print('id $value inserted successfully');
         emit(AppInsertDatabaseState());
@@ -206,16 +208,49 @@ create table $tableTodo (
     });
   }
 
-  List<dynamic> prayer = [];
+  insertPrayToDatabase(
+      {@required String? title,
+      @required String? time,
+      @required String? date}) async {
+    await database.transaction((txn) {
+      txn
+          .rawInsert(
+              'INSERT INTO $tableTodo ($columnTitle,$columnDate,$columnTime,$columnStatus) VALUES ("$title","$date","$time","new")')
+          .then((value) {
+        print('id $value inserted successfully');
+        emit(AppInsertDatabaseState());
+      }).catchError((onError) {
+        print(onError.toString());
+      });
+      todoInsert() async {
+        var x = print("inserting data ..");
+        return x;
+      }
+
+      return todoInsert();
+    });
+  }
+
+  Map<String, dynamic> prayer = {};
 
   void getPrayer() {
     emit(AppLoadingState());
+
     DioHelper.getData(
             url: 'v1/timingsByCity?',
-            query: {'city': 'Cairo', 'country': 'Egypt', 'method': '5'})
+            query: {'city': 'Cairo', 'country': 'Egypt', 'method': '4'})
         .then((value) {
-      prayer = value.data['data'];
-      print(prayer[0]['timings']);
+      prayer = value.data['data']['timings'];
+      print(prayer);
+      String prayDate = DateFormat.yMMMd().format(DateTime.now()).toString();
+      insertPrayToDatabase(title: 'Fajr', time: prayer['Fajr'], date: prayDate);
+      insertPrayToDatabase(
+          title: 'Dhuhr', time: prayer['Dhuhr'], date: prayDate);
+      insertPrayToDatabase(title: 'Asr', time: prayer['Asr'], date: prayDate);
+      insertPrayToDatabase(
+          title: 'Maghrib', time: prayer['Maghrib'], date: prayDate);
+      insertPrayToDatabase(title: 'Isha', time: prayer['Isha'], date: prayDate);
+      getDataFromDatabase(database);
       emit(AppGePrayerTimesSuccessState());
     }).catchError((onError) {
       print(onError.toString());
@@ -257,5 +292,16 @@ create table $tableTodo (
     isBottomSheetShown = isShow;
     fabIcon = icon;
     emit(AppChangeButtonSheetState());
+  }
+
+  void changeTaskStatus(model, context) {
+    if (model['status'] == 'new') {
+      AppCubit.get(context).updateData(status: 'done', id: model['id']);
+    } else if (model['status'] == 'done') {
+      AppCubit.get(context).updateData(status: 'new', id: model['id']);
+    } else {
+      AppCubit.get(context).updateData(status: 'new', id: model['id']);
+    }
+    emit(AppUpdateCheckedState());
   }
 }

@@ -64,7 +64,6 @@ class HomeLayout extends StatelessWidget {
                 scaffoldKey.currentState
                     ?.showBottomSheet(
                         (context) => Container(
-                              color: Colors.white,
                               padding: const EdgeInsets.all(16),
                               child: Form(
                                 key: formKey,
@@ -149,7 +148,7 @@ class HomeLayout extends StatelessWidget {
                                 ),
                               ),
                             ),
-                        elevation: 20.0)
+                        elevation: 1.0)
                     .closed
                     .then((value) {
                   cubit.changeBottomSheetState(isShow: false, icon: Icons.edit);

@@ -116,7 +116,7 @@ Widget buildTaskItem(context, Map model) => Padding(
                   key: Key(model['id'].toString()),
                   actionsAlignment: MainAxisAlignment.center,
                   content: Text("${model['title']} Deleted successfully",
-                      style: Theme.of(context).textTheme.bodySmall),
+                      style: Theme.of(context).textTheme.displaySmall),
                   actions: <Widget>[
                     const SizedBox(width: 20),
                     ElevatedButton(
@@ -124,7 +124,7 @@ Widget buildTaskItem(context, Map model) => Padding(
                           backgroundColor:
                               MaterialStateProperty.all(Colors.deepPurple)),
                       child: Text("Okay",
-                          style: Theme.of(context).textTheme.displaySmall),
+                          style: Theme.of(context).textTheme.bodySmall),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -145,15 +145,9 @@ Widget buildTaskItem(context, Map model) => Padding(
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: const [
               BoxShadow(
-                color: Color(0xffefefef),
-                offset: Offset(-20, -10),
-                blurRadius: 20,
-                spreadRadius: 0.0,
-              ),
-              BoxShadow(
-                color: Color(0xff8d8d8d),
-                offset: Offset(20, 10),
-                blurRadius: 40,
+                color: Color(0xff535353),
+                offset: Offset(4, 4),
+                blurRadius: 8,
                 spreadRadius: 0.0,
               ),
             ]),
@@ -165,16 +159,7 @@ Widget buildTaskItem(context, Map model) => Padding(
                   const Padding(padding: EdgeInsets.only(left: 20)),
                   GestureDetector(
                     onTap: () {
-                      if (model['status'] == 'new') {
-                        AppCubit.get(context)
-                            .updateData(status: 'done', id: model['id']);
-                      } else if (model['status'] == 'done') {
-                        AppCubit.get(context)
-                            .updateData(status: 'new', id: model['id']);
-                      } else {
-                        AppCubit.get(context)
-                            .updateData(status: 'new', id: model['id']);
-                      }
+                      AppCubit.get(context).changeTaskStatus(model, context);
                     },
                     child: model['status'] == 'done'
                         ? AnimatedContainer(
