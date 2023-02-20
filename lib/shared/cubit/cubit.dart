@@ -113,15 +113,15 @@ create table $tableTodo (
     archivedTasks = [];
     Color iconColor = Colors.deepPurple;
     database.rawQuery('SELECT status FROM tasks WHERE id = ?', ['$id']).then(
-            (value) {
-          if (value == 'new') {
-            iconColor = Colors.white;
-          } else {
-            iconColor = Colors.white;
-          }
+        (value) {
+      if (value == 'new') {
+        iconColor = Colors.white;
+      } else {
+        iconColor = Colors.white;
+      }
 
-          print(value);
-        });
+      print(value);
+    });
   }
 
   void updateData({
@@ -135,7 +135,7 @@ create table $tableTodo (
     });
   }
 
-  bool isDark = false;
+  bool isDark = true;
   ThemeMode appMode = ThemeMode.dark;
 
   void changeAppMode({bool? fromShared}) {
@@ -185,13 +185,14 @@ create table $tableTodo (
     });
   }
 
-  insertToDatabase({@required String? title,
-    @required String? time,
-    @required String? date}) async {
+  insertToDatabase(
+      {@required String? title,
+      @required String? time,
+      @required String? date}) async {
     await database.transaction((txn) {
       txn
           .rawInsert(
-          'INSERT INTO $tableTodo ($columnTitle,$columnDate,$columnTime,$columnStatus) VALUES ("$title","$date","$time","new")')
+              'INSERT INTO $tableTodo ($columnTitle,$columnDate,$columnTime,$columnStatus) VALUES ("$title","$date","$time","new")')
           .then((value) {
         print('id $value inserted successfully');
         emit(AppInsertDatabaseState());
@@ -215,10 +216,12 @@ create table $tableTodo (
     await database.transaction((txn) {
       txn
           .rawInsert(
-              'INSERT INTO $tableTodo ($columnTitle,$columnDate,$columnTime,$columnStatus) VALUES ("$title","$date","$time","new")')
-          .then((value) {
+          ''' replace into $tableTodo ($columnId, $columnTitle, $columnDate, $columnTime, $columnStatus)
+               values ((CASE WHEN (select  $columnId from $tableTodo where $columnTitle = "$title")=null 
+               THEN ((SELECT MAX($columnId) FROM $tableTodo) + 1) ELSE (select  $columnId from $tableTodo where 
+               $columnTitle = "$title") END ), "$title", "$date", "$time", "new")''').then((value) {
         print('id $value inserted successfully');
-        emit(AppInsertDatabaseState());
+        emit(AppInsertPrayDataState());
       }).catchError((onError) {
         print(onError.toString());
       });
@@ -235,7 +238,7 @@ create table $tableTodo (
 
   void getPrayer() {
     emit(AppLoadingState());
-
+    // http://api.aladhan.com/v1/timingsByCity?city=Cairo&country=Egypt&method=4
     DioHelper.getData(
             url: 'v1/timingsByCity?',
             query: {'city': 'Cairo', 'country': 'Egypt', 'method': '4'})
