@@ -23,8 +23,11 @@ Future<void> main() async {
   bool? isDark = CacheHelper.getBoolean(key: 'isDark');
   SharedPreferences prefs = await SharedPreferences.getInstance();
   initScreen = await prefs.getInt("initScreen");
-  await prefs.setInt("initScreen", 1);
-  print('initScreen ${initScreen}');
+  await prefs.setInt(
+    "initScreen",
+    1,
+  );
+  print('initScreen $initScreen');
 
   runApp(MyApp(isDark: isDark));
 }
