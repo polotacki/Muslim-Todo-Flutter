@@ -171,7 +171,11 @@ class HomeLayout extends StatelessWidget {
               BottomNavigationBarItem(
                   icon: Icon(Icons.menu),
                   tooltip: 'pending tasks',
-                  label: 'Tasks'),
+                  label: 'All Tasks'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.today_outlined),
+                  label: 'Today\'s Tasks ',
+                  tooltip: 'archived tasks'),
               BottomNavigationBarItem(
                   icon: Icon(Icons.check_circle_outline),
                   label: 'Done',
