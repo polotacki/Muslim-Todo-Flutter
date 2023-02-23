@@ -226,9 +226,10 @@ class MyApp extends StatelessWidget {
                             AnimatedSplashScreen.withScreenFunction(
                               splash: Lottie.asset(
                                   "assets/animations/loading.json"),
+                              backgroundColor: Theme.of(context).canvasColor,
                               screenFunction: () async {
                                 await Future.delayed(
-                                    const Duration(seconds: 5));
+                                    const Duration(seconds: 3));
                                 return HomeLayout();
                               },
                               splashTransition:
