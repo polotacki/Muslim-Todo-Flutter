@@ -55,8 +55,6 @@ class AppCubit extends Cubit<AppStates> {
     emit(AppChangeBottomNavBarState());
   }
 
-  bool check1 = false;
-  bool check2 = false;
   List<String> titles = ['My List', 'Today`s Tasks', 'Done Tasks', 'Archive'];
   late Database database;
   final String tableTodo = 'tasks';
@@ -119,6 +117,7 @@ create table $tableTodo (
     newTasks = [];
     doneTasks = [];
     archivedTasks = [];
+    Color iconColor = Colors.deepPurple;
     database.rawQuery('SELECT status FROM tasks WHERE id = ?', ['$id']).then(
         (value) {
       if (value == 'new') {
@@ -221,8 +220,7 @@ create table $tableTodo (
       @required String? time,
       @required String? date}) async {
     await database.transaction((txn) {
-      txn
-          .rawInsert(
+      txn.rawInsert(
           ''' replace into $tableTodo ($columnId, $columnTitle, $columnDate, $columnTime, $columnStatus)
                values ((CASE WHEN (select  $columnId from $tableTodo where $columnTitle = "$title")=null 
                THEN ((SELECT MAX($columnId) FROM $tableTodo) + 1) ELSE (select  $columnId from $tableTodo where 
