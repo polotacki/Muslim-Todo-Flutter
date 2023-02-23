@@ -65,7 +65,7 @@ class HomeLayout extends StatelessWidget {
                 scaffoldKey.currentState
                     ?.showBottomSheet(
                         (context) => Container(
-                          padding: const EdgeInsets.all(16),
+                              padding: const EdgeInsets.all(16),
                               child: Form(
                                 key: formKey,
                                 child: Column(
