@@ -1,8 +1,8 @@
-import 'dart:async';
-
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:lottie/lottie.dart';
 import 'package:untitled3/shared/styles/colors.dart';
 import 'package:untitled3/shared/styles/extensions.dart';
@@ -10,15 +10,16 @@ import 'package:untitled3/shared/styles/extensions.dart';
 import '../../layout/home_layout.dart';
 import '../cubit/cubit.dart';
 
-Widget defaultFormField({required TextEditingController controller,
-  required TextInputType type,
-  required IconData prefix,
-  required validate,
-  required String label,
-  bool isClickable = true,
-  onTap,
-  onSubmit,
-  onChange}) =>
+Widget defaultFormField(
+        {required TextEditingController controller,
+        required TextInputType type,
+        required IconData prefix,
+        required validate,
+        required String label,
+        bool isClickable = true,
+        onTap,
+        onSubmit,
+        onChange}) =>
     TextFormField(
       keyboardType: type,
       controller: controller,
@@ -177,7 +178,7 @@ Widget buildTaskItem(context, Map model) => Padding(
                                       fit: BoxFit.contain,
                                       repeat: false,
                                     ),
-                                    actions: <Widget>[],
+                                    actions: const <Widget>[],
                                   );
                                 });
                           },
@@ -204,11 +205,11 @@ Widget buildTaskItem(context, Map model) => Padding(
                         fit: BoxFit.cover,
                         repeat: false,
                       ),
-                      actions: <Widget>[],
+                      actions: const <Widget>[],
                     );
                   });
             }
-            return Future.delayed(const Duration(seconds: 1));
+            return null;
           },
           child: Container(
             height: 60.0,
@@ -321,10 +322,10 @@ Widget buildTaskItem(context, Map model) => Padding(
                             '${model['date']}',
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
-                        ],
+                        ].animate(interval: 600.ms).fade(duration: 300.ms),
                       )),
                 )
-              ],
+              ].animate().slideX(begin: 1, duration: 300.ms),
             ),
           ),
         ),
@@ -332,29 +333,36 @@ Widget buildTaskItem(context, Map model) => Padding(
     ));
 
 Widget taskBuilder(List<Map> tasks) => ConditionalBuilder(
-  condition: tasks.isNotEmpty,
-  builder: (context) => ListView.separated(
-      itemBuilder: (context, index) => buildTaskItem(context, tasks[index]),
+      condition: tasks.isNotEmpty,
+      builder: (context) => (ListView.separated(
+          itemBuilder: (context, index) => AnimationConfiguration.staggeredList(
+              position: index,
+              duration: const Duration(milliseconds: 375),
+              child: SlideAnimation(
+                  horizontalOffset: 50.0,
+                  child: FadeInAnimation(
+                      child: buildTaskItem(context, tasks[index])))),
           separatorBuilder: (context, index) => const Divider(
                 color: Colors.transparent,
               ),
-          itemCount: tasks.length),
-  fallback: (context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Expanded(flex: 1, child: Image.asset('assets/images/Task.png')),
-      Expanded(
-        flex: 1,
-        child: Text('List is empty .. , Add some tasks.',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium),
+          itemCount: tasks.length)),
+      fallback: (context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(flex: 1, child: Image.asset('assets/images/Task.png')),
+          Expanded(
+            flex: 1,
+            child: Text('List is empty .. , Add some tasks.',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium),
+          ),
+        ].animate(interval: 400.ms).fade(duration: 300.ms),
       ),
-    ],
-  ),
-);
+    );
 
-Widget onBoardingElement({required lottiePath, required title, required subTitle}) {
+Widget onBoardingElement(
+    {required lottiePath, required title, required subTitle}) {
   return SingleChildScrollView(
     scrollDirection: Axis.vertical,
     child: Column(

@@ -8,6 +8,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:untitled3/modules/archived_tasks/archived_tasks.dart';
 import 'package:untitled3/modules/done_tasks/done_tasks.dart';
 import 'package:untitled3/modules/pending_tasks/pending_tasks.dart';
+import 'package:untitled3/modules/today_tasks/today_pending_tasks.dart';
 import 'package:untitled3/shared/network/local/cache_helper.dart';
 
 import '../network/remote/dio_helper.dart';
@@ -18,12 +19,18 @@ class AppCubit extends Cubit<AppStates> {
   int currentIndex = 0;
   List<Widget> screens = [
     const PendingTasks(),
+    const TodayTasks(),
     const DoneTasks(),
     const ArchivedTasks(),
   ];
   List<Icon> iconAppBar = [
     const Icon(
       Icons.list_alt_rounded,
+      color: Colors.deepPurple,
+      size: 35,
+    ),
+    const Icon(
+      Icons.watch_later_outlined,
       color: Colors.deepPurple,
       size: 35,
     ),
@@ -38,6 +45,7 @@ class AppCubit extends Cubit<AppStates> {
       size: 35,
     )
   ];
+  List<Map> todayTasks = [];
   List<Map> newTasks = [];
   List<Map> doneTasks = [];
   List<Map> archivedTasks = [];
@@ -47,9 +55,7 @@ class AppCubit extends Cubit<AppStates> {
     emit(AppChangeBottomNavBarState());
   }
 
-  bool check1 = false;
-  bool check2 = false;
-  List<String> titles = ['My List', 'Done Tasks', 'Archive'];
+  List<String> titles = ['My List', 'Today`s Tasks', 'Done Tasks', 'Archive'];
   late Database database;
   final String tableTodo = 'tasks';
   final String columnId = 'id';
@@ -214,8 +220,7 @@ create table $tableTodo (
       @required String? time,
       @required String? date}) async {
     await database.transaction((txn) {
-      txn
-          .rawInsert(
+      txn.rawInsert(
           ''' replace into $tableTodo ($columnId, $columnTitle, $columnDate, $columnTime, $columnStatus)
                values ((CASE WHEN (select  $columnId from $tableTodo where $columnTitle = "$title")=null 
                THEN ((SELECT MAX($columnId) FROM $tableTodo) + 1) ELSE (select  $columnId from $tableTodo where 
@@ -263,14 +268,21 @@ create table $tableTodo (
 
   void getDataFromDatabase(database) {
     newTasks = [];
+    todayTasks = [];
     doneTasks = [];
     archivedTasks = [];
     database.rawQuery('SELECT * FROM tasks').then((value) {
       value.forEach((element) {
-        if (element['status'] == 'new') {
+        if (element['status'] == 'new' || element['status'] == 'done') {
           newTasks.add(element);
-        } else if (element['status'] == 'done') {
-          doneTasks.add(element);
+          if (element['status'] == 'new' &&
+              element['date'] ==
+                  DateFormat.yMMMd().format(DateTime.now()).toString()) {
+            todayTasks.add(element);
+          }
+          if (element['status'] == 'done') {
+            doneTasks.add(element);
+          }
         } else {
           archivedTasks.add(element);
         }
