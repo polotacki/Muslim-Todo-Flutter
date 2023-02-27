@@ -83,9 +83,9 @@ class MyApp extends StatelessWidget {
                           ),
                           shadowColor: dark,
                           bottomNavigationBarTheme:
-                          const BottomNavigationBarThemeData(
+                              const BottomNavigationBarThemeData(
                             unselectedIconTheme:
-                            IconThemeData(color: iconColorDark),
+                                IconThemeData(color: iconColorDark),
                             backgroundColor: dark,
                             type: BottomNavigationBarType.fixed,
                           ),
