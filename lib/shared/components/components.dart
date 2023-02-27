@@ -247,7 +247,7 @@ Widget buildTaskItem(context, Map model) => Padding(
                                       Border.all(width: 3, color: Colors.grey),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                          child: Icon(
+                                child: Icon(
                                   Icons.check_box,
                                   color: AppCubit.get(context).isDark == false
                                       ? Colors.white
