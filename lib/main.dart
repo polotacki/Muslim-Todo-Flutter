@@ -52,6 +52,8 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => AppCubit()
         ..createDatabase()
+        ..handleLocationPermission()
+        ..determinePosition()
         ..getPrayer()
         ..changeAppMode(fromShared: isDark),
       child: BlocConsumer<AppCubit, AppStates>(
@@ -69,6 +71,7 @@ class MyApp extends StatelessWidget {
                           : ThemeMode.light,
                       title: 'todoApp',
                       darkTheme: ThemeData(
+                          brightness: Brightness.dark,
                           iconTheme: const IconThemeData(color: iconColorDark),
                           drawerTheme: const DrawerThemeData(
                               backgroundColor: Colors.deepPurple),
@@ -80,9 +83,9 @@ class MyApp extends StatelessWidget {
                           ),
                           shadowColor: dark,
                           bottomNavigationBarTheme:
-                              const BottomNavigationBarThemeData(
+                          const BottomNavigationBarThemeData(
                             unselectedIconTheme:
-                                IconThemeData(color: iconColorDark),
+                            IconThemeData(color: iconColorDark),
                             backgroundColor: dark,
                             type: BottomNavigationBarType.fixed,
                           ),
@@ -126,7 +129,7 @@ class MyApp extends StatelessWidget {
                             displaySmall: TextStyle(
                                 fontSize: 16,
                                 fontFamily: "Gilroy-Medium.ttf",
-                                color: textColor2),
+                                color: textColor1),
                             labelMedium: TextStyle(
                                 fontSize: 32,
                                 fontFamily: "Gilroy-Medium.ttf",
@@ -149,6 +152,7 @@ class MyApp extends StatelessWidget {
                             ),
                           ).apply(fontFamily: 'Gilroy')),
                       theme: ThemeData(
+                          brightness: Brightness.light,
                           shadowColor: shadowColorLight,
                           primaryColorLight: light,
                           iconTheme: const IconThemeData(color: iconColorLight),
@@ -156,11 +160,11 @@ class MyApp extends StatelessWidget {
                               backgroundColor: Colors.deepPurple),
                           appBarTheme: const AppBarTheme(
                             systemOverlayStyle:
-                                SystemUiOverlayStyle(statusBarColor: light),
+                                SystemUiOverlayStyle(statusBarColor: dark),
                             backgroundColor: light,
                           ),
                           bottomNavigationBarTheme:
-                              const BottomNavigationBarThemeData(
+                          const BottomNavigationBarThemeData(
                             backgroundColor: light,
                             type: BottomNavigationBarType.fixed,
                           ),
