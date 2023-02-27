@@ -107,12 +107,14 @@ Widget buildTaskItem(context, Map model) => Padding(
       children: [
         Container(
             height: 60.0,
-            width: double.infinity,
+            width: double.infinity - 1,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
-                  color: Color(0xff535353),
+                  color: AppCubit.get(context).isDark == false
+                      ? const Color(0xff535353)
+                      : const Color.fromRGBO(27, 31, 35, 1.0),
                   offset: Offset(4, 4),
                   blurRadius: 8,
                   spreadRadius: 0.0,
@@ -215,7 +217,9 @@ Widget buildTaskItem(context, Map model) => Padding(
             height: 60.0,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppCubit.get(context).isDark == false
+                  ? Colors.white
+                  : Color.fromRGBO(36, 41, 46, 1),
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: Row(
@@ -272,9 +276,11 @@ Widget buildTaskItem(context, Map model) => Padding(
                                       Border.all(width: 3, color: Colors.grey),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                                child: const Icon(
+                          child: Icon(
                                   Icons.check_box,
-                                  color: Colors.white,
+                                  color: AppCubit.get(context).isDark == false
+                                      ? Colors.white
+                                      : Color.fromRGBO(36, 41, 46, 1),
                                   size: 24,
                                 ),
                               ),
@@ -291,9 +297,15 @@ Widget buildTaskItem(context, Map model) => Padding(
                                   physics: const BouncingScrollPhysics(),
                                   child: Text(
                                     '${model['title']}',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall,
+                                    style: AppCubit.get(context).isDark == false
+                                        ? Theme.of(context)
+                                            .textTheme
+                                            .displaySmall
+                                            ?.copyWith(color: Colors.black)
+                                        : Theme.of(context)
+                                            .textTheme
+                                            .displaySmall
+                                            ?.copyWith(color: Colors.white),
                                   ),
                                 ),
                               ),
