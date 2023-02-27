@@ -156,7 +156,7 @@ create table $tableTodo (
     }
   }
 
-  Future<Position> determinePosition() async {
+  Future<Position> handleLocationPermission() async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -180,6 +180,17 @@ create table $tableTodo (
     emit(AppGetLocationPermission());
 
     return await Geolocator.getCurrentPosition();
+  }
+
+  Position? currentPosition;
+
+  Future<void> determinePosition() async {
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+        .then((Position position) {
+      currentPosition = position;
+    }).catchError((e) {
+      debugPrint(e);
+    });
   }
 
   void deleteData({
