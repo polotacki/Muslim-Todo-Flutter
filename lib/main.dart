@@ -164,7 +164,7 @@ class MyApp extends StatelessWidget {
                             backgroundColor: light,
                           ),
                           bottomNavigationBarTheme:
-                          const BottomNavigationBarThemeData(
+                              const BottomNavigationBarThemeData(
                             backgroundColor: light,
                             type: BottomNavigationBarType.fixed,
                           ),
