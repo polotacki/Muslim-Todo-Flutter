@@ -143,51 +143,22 @@ Widget buildTaskItem(context, Map model) => Padding(
           confirmDismiss: (direction) async {
             if (direction == DismissDirection.endToStart) {
               AppCubit.get(context).deleteData(id: model['id']);
-
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      key: Key(model['id'].toString()),
-                      actionsAlignment: MainAxisAlignment.center,
-                      actionsOverflowAlignment: OverflowBarAlignment.center,
-                      content: Text("${model['title']} Deleted successfully",
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.labelSmall),
-                      actions: <Widget>[
-                        ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.deepPurple)),
-                          child: Text("Okay",
-                              style: Theme.of(context).textTheme.bodySmall),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    backgroundColor: Colors.transparent,
-                                    elevation: 0.0,
-                                    key: Key(model['id'].toString()),
-                                    actionsAlignment: MainAxisAlignment.center,
-                                    actionsOverflowAlignment:
-                                        OverflowBarAlignment.center,
-                                    content: Lottie.asset(
-                                      'assets/animations/delete-animation.json',
-                                      width: 150.w,
-                                      height: 150.h,
-                                      fit: BoxFit.contain,
-                                      repeat: false,
-                                    ),
-                                    actions: const <Widget>[],
-                                  );
-                                });
-                          },
-                        ),
-                      ],
-                    );
-                  });
+              final sbar = SnackBar(
+                content: Text("${model['title']} Deleted successfully",
+                    textAlign: TextAlign.left,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelSmall
+                        ?.copyWith(color: Colors.white)),
+                backgroundColor: Color.fromRGBO(36, 41, 46, 1),
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18)),
+                margin: EdgeInsets.only(bottom: 10, left: 24, right: 24),
+                elevation: 8.0,
+                duration: Duration(seconds: 10),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(sbar);
             } else {
               AppCubit.get(context)
                   .updateData(status: 'archive', id: model['id']);
