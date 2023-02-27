@@ -14,6 +14,7 @@ class DioHelper {
     required String url,
     required Map<String, dynamic> query,
   }) async {
+    print(query);
     return await dio!.get(
       url,
       queryParameters: query,
