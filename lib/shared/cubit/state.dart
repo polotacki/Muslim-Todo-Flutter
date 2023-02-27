@@ -29,6 +29,8 @@ class AppChangeModeState extends AppStates {}
 
 class AppGetLocationPermission extends AppStates {}
 
+class AppGetCurrentLocation extends AppStates {}
+
 class AppGePrayerTimesSuccessState extends AppStates {}
 
 class AppGePrayerTimesErrorState extends AppStates {
