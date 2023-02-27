@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../cubit/cubit.dart';
 import 'custom_list_tile.dart';
@@ -60,8 +61,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ),
             onToggle: (val) {
               setState(() {
-                status = val;
                 AppCubit.get(context).changeAppMode();
+                status = val;
+                Fluttertoast.showToast(
+                    msg: AppCubit.get(context).isDark == false
+                        ? 'Light Mode'
+                        : 'Dark Mode',
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: AppCubit.get(context).isDark == false
+                        ? Color(0xff535353)
+                        : Colors.white,
+                    textColor: AppCubit.get(context).isDark == false
+                        ? Colors.white
+                        : Color.fromRGBO(27, 31, 35, 1.0),
+                    fontSize: 16.0);
               });
             },
           ),
