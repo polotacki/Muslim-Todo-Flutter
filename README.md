@@ -51,6 +51,8 @@ The app's color scheme and typography are carefully chosen to create a calming a
 -   Community Features
 -   Donation Tracker
 -   Personalized Reminders
+### download & install
+[![Version 1.0.0](https://img.shields.io/badge/Version-1.0.0-blue)](https://github.com/polotacki/muslim_todo_flutter/releases/tag/v1.0.0)
 
 ### Conclusion
 
