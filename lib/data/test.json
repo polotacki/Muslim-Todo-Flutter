@@ -1,0 +1,93 @@
+{
+  "code": 200,
+  "status": "OK",
+  "data": {
+    "timings": {
+      "Fajr": "05:10",
+      "Sunrise": "06:32",
+      "Dhuhr": "12:09",
+      "Asr": "15:20",
+      "Sunset": "17:45",
+      "Maghrib": "17:45",
+      "Isha": "19:15",
+      "Imsak": "05:00",
+      "Midnight": "00:09",
+      "Firstthird": "22:01",
+      "Lastthird": "02:17"
+    },
+    "date": {
+      "readable": "18 Feb 2023",
+      "timestamp": "1676696400",
+      "hijri": {
+        "date": "27-07-1444",
+        "format": "DD-MM-YYYY",
+        "day": "27",
+        "weekday": {
+          "en": "Al Sabt",
+          "ar": "\u0627\u0644\u0633\u0628\u062a"
+        },
+        "month": {
+          "number": 7,
+          "en": "Rajab",
+          "ar": "\u0631\u064e\u062c\u064e\u0628"
+        },
+        "year": "1444",
+        "designation": {
+          "abbreviated": "AH",
+          "expanded": "Anno Hegirae"
+        },
+        "holidays": [
+          "Lailat-ul-Miraj"
+        ]
+      },
+      "gregorian": {
+        "date": "18-02-2023",
+        "format": "DD-MM-YYYY",
+        "day": "18",
+        "weekday": {
+          "en": "Saturday"
+        },
+        "month": {
+          "number": 2,
+          "en": "February"
+        },
+        "year": "2023",
+        "designation": {
+          "abbreviated": "AD",
+          "expanded": "Anno Domini"
+        }
+      }
+    },
+    "meta": {
+      "latitude": 30.079694,
+      "longitude": 31.323437,
+      "timezone": "Africa\/Cairo",
+      "method": {
+        "id": 4,
+        "name": "Umm Al-Qura University, Makkah",
+        "params": {
+          "Fajr": 18.5,
+          "Isha": "90 min"
+        },
+        "location": {
+          "latitude": 21.3890824,
+          "longitude": 39.8579118
+        }
+      },
+      "latitudeAdjustmentMethod": "ANGLE_BASED",
+      "midnightMode": "STANDARD",
+      "school": "STANDARD",
+      "offset": {
+        "Imsak": 0,
+        "Fajr": 0,
+        "Sunrise": 0,
+        "Dhuhr": 0,
+        "Asr": 0,
+        "Maghrib": 0,
+        "Sunset": 0,
+        "Isha": 0,
+        "Midnight": 0
+      }
+    }
+  }
+}

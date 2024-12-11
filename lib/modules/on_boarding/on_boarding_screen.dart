@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:untitled3/layout/home_layout.dart';
-import 'package:untitled3/shared/components/components.dart';
-import 'package:untitled3/shared/styles/colors.dart';
+import 'package:muslim_todo_flutter/layout/home_layout.dart';
+import 'package:muslim_todo_flutter/shared/components/components.dart';
+import 'package:muslim_todo_flutter/shared/styles/colors.dart';
 
 import '../../data/on_boarding.dart';
 import '../../models/on_boarding_data.dart';

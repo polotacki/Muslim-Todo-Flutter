@@ -4,8 +4,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:lottie/lottie.dart';
-import 'package:untitled3/shared/styles/colors.dart';
-import 'package:untitled3/shared/styles/extensions.dart';
+import 'package:muslim_todo_flutter/shared/styles/colors.dart';
+import 'package:muslim_todo_flutter/shared/styles/extensions.dart';
 
 import '../../layout/home_layout.dart';
 import '../cubit/cubit.dart';
@@ -101,7 +101,7 @@ Widget slideRightBackground() {
 }
 
 Widget buildTaskItem(context, Map model) => Padding(
-    padding: EdgeInsets.symmetric(vertical: 5.0.wp, horizontal: 9.0.wp),
+    padding: EdgeInsets.symmetric(vertical: 5.0.w, horizontal: 9.0.w),
     child: Stack(
       clipBehavior: Clip.none,
       children: [
@@ -156,7 +156,7 @@ Widget buildTaskItem(context, Map model) => Padding(
                     borderRadius: BorderRadius.circular(18)),
                 margin: EdgeInsets.only(bottom: 10, left: 24, right: 24),
                 elevation: 8.0,
-                duration: Duration(seconds: 10),
+                duration: Duration(seconds: 3),
               );
               ScaffoldMessenger.of(context).showSnackBar(sbar);
             } else {
@@ -257,7 +257,7 @@ Widget buildTaskItem(context, Map model) => Padding(
                               ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 4.0.wp),
+                        padding: EdgeInsets.only(left: 4.0.w),
                         child: SizedBox(
                           width: 80,
                           child: Row(

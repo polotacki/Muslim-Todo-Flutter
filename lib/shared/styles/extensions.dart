@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 extension PercentageSize on double {
-  double get hp => (Get.height * (this / 100));
+  double  hp(context)  => (MediaQuery.of(context).size.height * (this / 100));
 
-  double get wp => (Get.width * (this / 100));
+    double  wp(context)   => (MediaQuery.of(context).size.width * (this / 100));
 }
 
 extension HexColor on Color {
