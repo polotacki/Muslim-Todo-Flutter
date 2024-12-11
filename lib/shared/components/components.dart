@@ -4,8 +4,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:lottie/lottie.dart';
-import 'package:untitled3/shared/styles/colors.dart';
-import 'package:untitled3/shared/styles/extensions.dart';
+import 'package:muslim_todo_flutter/shared/styles/colors.dart';
+import 'package:muslim_todo_flutter/shared/styles/extensions.dart';
 
 import '../../layout/home_layout.dart';
 import '../cubit/cubit.dart';
@@ -101,18 +101,20 @@ Widget slideRightBackground() {
 }
 
 Widget buildTaskItem(context, Map model) => Padding(
-    padding: EdgeInsets.symmetric(vertical: 5.0.wp, horizontal: 9.0.wp),
+    padding: EdgeInsets.symmetric(vertical: 5.0.w, horizontal: 9.0.w),
     child: Stack(
       clipBehavior: Clip.none,
       children: [
         Container(
             height: 60.0,
-            width: double.infinity,
+            width: double.infinity - 1,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
-                  color: Color(0xff535353),
+                  color: AppCubit.get(context).isDark == false
+                      ? const Color(0xff535353)
+                      : const Color.fromRGBO(27, 31, 35, 1.0),
                   offset: Offset(4, 4),
                   blurRadius: 8,
                   spreadRadius: 0.0,
@@ -141,51 +143,22 @@ Widget buildTaskItem(context, Map model) => Padding(
           confirmDismiss: (direction) async {
             if (direction == DismissDirection.endToStart) {
               AppCubit.get(context).deleteData(id: model['id']);
-
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      key: Key(model['id'].toString()),
-                      actionsAlignment: MainAxisAlignment.center,
-                      actionsOverflowAlignment: OverflowBarAlignment.center,
-                      content: Text("${model['title']} Deleted successfully",
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.labelSmall),
-                      actions: <Widget>[
-                        ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.deepPurple)),
-                          child: Text("Okay",
-                              style: Theme.of(context).textTheme.bodySmall),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    backgroundColor: Colors.transparent,
-                                    elevation: 0.0,
-                                    key: Key(model['id'].toString()),
-                                    actionsAlignment: MainAxisAlignment.center,
-                                    actionsOverflowAlignment:
-                                        OverflowBarAlignment.center,
-                                    content: Lottie.asset(
-                                      'assets/animations/delete-animation.json',
-                                      width: 150.w,
-                                      height: 150.h,
-                                      fit: BoxFit.contain,
-                                      repeat: false,
-                                    ),
-                                    actions: const <Widget>[],
-                                  );
-                                });
-                          },
-                        ),
-                      ],
-                    );
-                  });
+              final sbar = SnackBar(
+                content: Text("${model['title']} Deleted successfully",
+                    textAlign: TextAlign.left,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelSmall
+                        ?.copyWith(color: Colors.white)),
+                backgroundColor: Color.fromRGBO(36, 41, 46, 1),
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18)),
+                margin: EdgeInsets.only(bottom: 10, left: 24, right: 24),
+                elevation: 8.0,
+                duration: Duration(seconds: 3),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(sbar);
             } else {
               AppCubit.get(context)
                   .updateData(status: 'archive', id: model['id']);
@@ -215,7 +188,9 @@ Widget buildTaskItem(context, Map model) => Padding(
             height: 60.0,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppCubit.get(context).isDark == false
+                  ? Colors.white
+                  : Color.fromRGBO(36, 41, 46, 1),
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: Row(
@@ -272,15 +247,17 @@ Widget buildTaskItem(context, Map model) => Padding(
                                       Border.all(width: 3, color: Colors.grey),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.check_box,
-                                  color: Colors.white,
+                                  color: AppCubit.get(context).isDark == false
+                                      ? Colors.white
+                                      : Color.fromRGBO(36, 41, 46, 1),
                                   size: 24,
                                 ),
                               ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 4.0.wp),
+                        padding: EdgeInsets.only(left: 4.0.w),
                         child: SizedBox(
                           width: 80,
                           child: Row(
@@ -291,9 +268,15 @@ Widget buildTaskItem(context, Map model) => Padding(
                                   physics: const BouncingScrollPhysics(),
                                   child: Text(
                                     '${model['title']}',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall,
+                                    style: AppCubit.get(context).isDark == false
+                                        ? Theme.of(context)
+                                            .textTheme
+                                            .displaySmall
+                                            ?.copyWith(color: Colors.black)
+                                        : Theme.of(context)
+                                            .textTheme
+                                            .displaySmall
+                                            ?.copyWith(color: Colors.white),
                                   ),
                                 ),
                               ),

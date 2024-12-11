@@ -5,11 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:untitled3/modules/archived_tasks/archived_tasks.dart';
-import 'package:untitled3/modules/done_tasks/done_tasks.dart';
-import 'package:untitled3/modules/pending_tasks/pending_tasks.dart';
-import 'package:untitled3/modules/today_tasks/today_pending_tasks.dart';
-import 'package:untitled3/shared/network/local/cache_helper.dart';
+import 'package:muslim_todo_flutter/modules/archived_tasks/archived_tasks.dart';
+import 'package:muslim_todo_flutter/modules/done_tasks/done_tasks.dart';
+import 'package:muslim_todo_flutter/modules/pending_tasks/pending_tasks.dart';
+import 'package:muslim_todo_flutter/modules/today_tasks/today_pending_tasks.dart';
+import 'package:muslim_todo_flutter/shared/network/local/cache_helper.dart';
 
 import '../network/remote/dio_helper.dart';
 
@@ -156,7 +156,7 @@ create table $tableTodo (
     }
   }
 
-  Future<Position> determinePosition() async {
+  Future<Position> handleLocationPermission() async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -180,6 +180,17 @@ create table $tableTodo (
     emit(AppGetLocationPermission());
 
     return await Geolocator.getCurrentPosition();
+  }
+
+  Position? currentPosition;
+
+  Future<void> determinePosition() async {
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+        .then((Position position) {
+      currentPosition = position;
+    }).catchError((e) {
+      debugPrint(e);
+    });
   }
 
   void deleteData({

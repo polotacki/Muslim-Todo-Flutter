@@ -2,10 +2,12 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-import 'package:untitled3/shared/components/components.dart';
-import 'package:untitled3/shared/cubit/cubit.dart';
-import 'package:untitled3/shared/styles/extensions.dart';
+import 'package:muslim_todo_flutter/shared/components/components.dart';
+import 'package:muslim_todo_flutter/shared/cubit/cubit.dart';
+import 'package:muslim_todo_flutter/shared/styles/extensions.dart';
 
 import '../shared/components/drawer/custom_drawer.dart';
 
@@ -36,7 +38,7 @@ class HomeLayout extends StatelessWidget {
             ).animate().fadeIn(duration: 300.ms),
             leading: Padding(
               padding:
-                  EdgeInsets.only(left: 4.0.wp, bottom: 2.0.wp, top: 2.0.wp),
+                  EdgeInsets.only(left: 20,right: 20, bottom: 2.0.w, top: 2.0.w),
               child: cubit.iconAppBar[cubit.currentIndex],
             ).animate().fadeIn(duration: 300.ms),
             actions: const [CustomDrawer()],
@@ -56,12 +58,27 @@ class HomeLayout extends StatelessWidget {
               if (cubit.isBottomSheetShown) {
                 if (formKey.currentState?.validate() != true) {
                 } else {
+                  Fluttertoast.showToast(
+                      msg: "Task Added !",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: AppCubit.get(context).isDark == false
+                          ? Color(0xff535353)
+                          : Colors.white,
+                      textColor: AppCubit.get(context).isDark == false
+                          ? Colors.white
+                          : Color.fromRGBO(27, 31, 35, 1.0),
+                      fontSize: 16.0);
                   cubit.insertToDatabase(
                       title: titleController.text,
                       time: timeController.text,
                       date: dateController.text);
                 }
               } else {
+                titleController.text = '';
+                timeController.text = '';
+                dateController.text = '';
                 scaffoldKey.currentState
                     ?.showBottomSheet(
                         (context) => Container(

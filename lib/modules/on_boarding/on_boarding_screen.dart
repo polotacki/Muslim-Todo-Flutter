@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:untitled3/layout/home_layout.dart';
-import 'package:untitled3/shared/components/components.dart';
-import 'package:untitled3/shared/styles/colors.dart';
+import 'package:muslim_todo_flutter/layout/home_layout.dart';
+import 'package:muslim_todo_flutter/shared/components/components.dart';
+import 'package:muslim_todo_flutter/shared/styles/colors.dart';
 
 import '../../data/on_boarding.dart';
 import '../../models/on_boarding_data.dart';
@@ -88,7 +87,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                 children: [
                                   ElevatedButton(
                                     onPressed: () {
-                                      cubit.determinePosition();
+                                      cubit.handleLocationPermission();
                                       Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(
@@ -129,28 +128,29 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                       style: TextButton.styleFrom(
                                         elevation: 0,
                                         textStyle: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 13.w,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 13.w,
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        "SKIP",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
                                     ),
-                                  ),
-                                  child: const Text(
-                                    "SKIP",
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    _controller.nextPage(
-                                      duration:
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        _controller.nextPage(
+                                          duration:
                                               const Duration(milliseconds: 200),
                                           curve: Curves.easeIn,
                                         );
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      side: BorderSide(
-                                          width: 2, color: Colors.deepPurple),
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          side: BorderSide(
+                                              width: 2,
+                                              color: Colors.deepPurple),
                                           borderRadius:
                                               BorderRadius.circular(50),
                                         ),

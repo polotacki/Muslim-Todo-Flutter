@@ -6,12 +6,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:untitled3/layout/home_layout.dart';
-import 'package:untitled3/modules/on_boarding/on_boarding_screen.dart';
-import 'package:untitled3/shared/bloc_observer.dart';
-import 'package:untitled3/shared/cubit/cubit.dart';
-import 'package:untitled3/shared/network/local/cache_helper.dart';
-import 'package:untitled3/shared/network/remote/dio_helper.dart';
+import 'package:muslim_todo_flutter/layout/home_layout.dart';
+import 'package:muslim_todo_flutter/modules/on_boarding/on_boarding_screen.dart';
+import 'package:muslim_todo_flutter/shared/bloc_observer.dart';
+import 'package:muslim_todo_flutter/shared/cubit/cubit.dart';
+import 'package:muslim_todo_flutter/shared/network/local/cache_helper.dart';
+import 'package:muslim_todo_flutter/shared/network/remote/dio_helper.dart';
 
 int? initScreen;
 
@@ -52,6 +52,8 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => AppCubit()
         ..createDatabase()
+        ..handleLocationPermission()
+        ..determinePosition()
         ..getPrayer()
         ..changeAppMode(fromShared: isDark),
       child: BlocConsumer<AppCubit, AppStates>(
@@ -69,6 +71,7 @@ class MyApp extends StatelessWidget {
                           : ThemeMode.light,
                       title: 'todoApp',
                       darkTheme: ThemeData(
+                          brightness: Brightness.dark,
                           iconTheme: const IconThemeData(color: iconColorDark),
                           drawerTheme: const DrawerThemeData(
                               backgroundColor: Colors.deepPurple),
@@ -126,7 +129,7 @@ class MyApp extends StatelessWidget {
                             displaySmall: TextStyle(
                                 fontSize: 16,
                                 fontFamily: "Gilroy-Medium.ttf",
-                                color: textColor2),
+                                color: textColor1),
                             labelMedium: TextStyle(
                                 fontSize: 32,
                                 fontFamily: "Gilroy-Medium.ttf",
@@ -149,6 +152,7 @@ class MyApp extends StatelessWidget {
                             ),
                           ).apply(fontFamily: 'Gilroy')),
                       theme: ThemeData(
+                          brightness: Brightness.light,
                           shadowColor: shadowColorLight,
                           primaryColorLight: light,
                           iconTheme: const IconThemeData(color: iconColorLight),
@@ -156,7 +160,7 @@ class MyApp extends StatelessWidget {
                               backgroundColor: Colors.deepPurple),
                           appBarTheme: const AppBarTheme(
                             systemOverlayStyle:
-                                SystemUiOverlayStyle(statusBarColor: light),
+                                SystemUiOverlayStyle(statusBarColor: dark),
                             backgroundColor: light,
                           ),
                           bottomNavigationBarTheme:
